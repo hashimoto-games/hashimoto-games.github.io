@@ -1,0 +1,400 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b0e20">
+<meta name="description" content="はしmoto Gamesで気軽に遊ぼう！スマホのブラウザで遊べる無料のミニゲーム8本。登録もアプリも不要。">
+<meta property="og:title" content="はしmoto Games｜スマホで遊べるミニゲーム">
+<meta property="og:description" content="スマホで遊べる8本のオリジナルゲーム🎮">
+<meta property="og:type" content="website">
+<title>はしmoto Games｜スマホで遊べるミニゲーム</title>
+<style>
+:root{color-scheme:dark;font-family:system-ui,-apple-system,"Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif}
+*{box-sizing:border-box}
+html{background:#090c1c}
+body{margin:0;min-height:100dvh;background:radial-gradient(ellipse 65% 48% at 9% 0%,#37468e49,transparent),radial-gradient(ellipse 50% 45% at 96% 7%,#7943a83d,transparent),linear-gradient(165deg,#10162d 0%,#0a0e1d 52%,#0d0c1d 100%);color:#f4f4ff;overflow-x:hidden}
+body::before{position:fixed;z-index:0;content:"";inset:0;pointer-events:none;background-image:radial-gradient(#858bcc37 .65px,transparent .7px);background-size:29px 29px;opacity:.30}
+button,a{-webkit-tap-highlight-color:transparent}
+.wrap{position:relative;max-width:920px;margin:0 auto;padding:calc(env(safe-area-inset-top,0px) + 19px) 19px calc(env(safe-area-inset-bottom,0px) + 24px)}
+.top{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.logo{display:flex;gap:12px;align-items:center}
+.logo-icon{display:grid;grid-template-columns:repeat(2,9px);gap:4px;width:39px;height:39px;align-content:center;justify-content:center;background:linear-gradient(145deg,#292c55,#181c38);border:1px solid #494977;border-radius:12px;box-shadow:0 8px 25px #0004}
+.logo-icon i{width:9px;height:9px;border-radius:3px;display:block;background:#70e9f0}.logo-icon i:nth-child(2){background:#b98cff}.logo-icon i:nth-child(3){background:#ffae76}.logo-icon i:nth-child(4){background:#76e7aa}
+.logo-name{font-size:clamp(13px,3.8vw,19px);letter-spacing:.15px;font-weight:950;line-height:1.2;white-space:nowrap}.logo-sub{font-size:8px;letter-spacing:2.1px;color:#9ca5ce;font-weight:800;margin-top:3px}
+.share{min-height:40px;display:flex;align-items:center;gap:7px;padding:9px 14px;color:#e8ddff;background:#222344;border:1px solid #454775;border-radius:999px;font-size:12px;font-weight:850;cursor:pointer}
+.share:active{transform:scale(.97)}.share svg{width:16px;height:16px}
+.hero{padding:40px 1px 25px;position:relative}.tag{display:inline-flex;align-items:center;gap:7px;background:#292448;border:1px solid #5c4f8b;padding:7px 10px;border-radius:9px;color:#c9affd;font-size:10px;letter-spacing:1.5px;font-weight:900}
+h1{font-size:clamp(32px,7.7vw,62px);margin:18px 0 10px;line-height:1.18;letter-spacing:-1.5px;font-weight:950}h1 em{display:block;color:#87e8e1;font-style:normal;text-shadow:0 0 35px #66e5e533}
+.lead{color:#afbbd6;font-size:13px;line-height:1.9;margin:11px 0 20px}.features{display:flex;flex-wrap:wrap;gap:8px}.feature{border:1px solid #384362;background:#151c34ae;padding:7px 10px;border-radius:999px;color:#c1cee8;font-size:11px;font-weight:800}
+.sectiontop{display:flex;justify-content:space-between;align-items:center;margin:12px 1px 12px}.sectiontop h2{font-size:15px;margin:0;font-weight:900;letter-spacing:.6px}.small{font-size:10px;color:#8b93b0;font-weight:850;letter-spacing:1px}
+.games{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:17px}
+.game{background:#171d34;min-width:0;border:1px solid #303b61;border-radius:22px;overflow:hidden;box-shadow:0 18px 44px #0003;transition:transform .2s, border-color .2s;display:flex;flex-direction:column}.game:hover{transform:translateY(-3px);border-color:#6775a5}
+.visual{position:relative;overflow:hidden;background:#121a30;aspect-ratio:340/215;border-bottom:1px solid #343a5a}.visual svg{width:100%;height:100%;display:block}
+.visual::after{content:"";position:absolute;inset:auto 0 0;height:30%;background:linear-gradient(transparent,#11152877);pointer-events:none}
+.number{position:absolute;left:13px;top:12px;z-index:1;display:block;color:#d6edff;background:#07101ca8;backdrop-filter:blur(6px);border:1px solid #ffffff2c;border-radius:8px;padding:7px 9px;font-size:10px;font-weight:850;letter-spacing:1px}
+.content{padding:17px 17px 18px;display:flex;flex-direction:column;gap:8px;flex:1}.category{font-size:10px;letter-spacing:1.2px;font-weight:900;color:#78e6d5}.game.chain .category{color:#c399ff}.game.fruits .category{color:#ffca83}.game.picture .category{color:#f6d493}.game.titleline{display:flex;align-items:center;justify-content:space-between;gap:8px}.titleline h3{font-size:25px;letter-spacing:.7px;margin:0;font-weight:1000}.score{font-size:10px;font-weight:800;color:#a3a9c7;white-space:nowrap}.score b{display:block;color:#ffdb94;font-size:12px;text-align:right;margin-top:3px;font-variant-numeric:tabular-nums}
+.explain{color:#adb8d3;font-size:12px;margin:1px 0 7px;line-height:1.7;min-height:41px}
+.play{display:flex;align-items:center;justify-content:space-between;width:100%;min-height:50px;border-radius:13px;padding:12px 16px;text-decoration:none;font-size:14px;font-weight:950;background:linear-gradient(135deg,#74efd6,#3fc3cc);color:#0e2834;box-shadow:0 6px 22px #4bd8ca1a}
+.chain .play{background:linear-gradient(135deg,#c7a3ff,#b383fc);color:#291d45;box-shadow:0 6px 22px #b383fc19}.fruits .play{background:linear-gradient(135deg,#ffe19a,#ffab66);color:#3e2536;box-shadow:0 6px 22px #ffa64b22}.picture .play{background:linear-gradient(135deg,#f5dfa9,#edba78);color:#322947;box-shadow:0 6px 22px #dfa87321}.play:active{transform:scale(.982)}.nokoribi .category{color:#ffce94}.nokoribi .play{background:linear-gradient(135deg,#ffce92,#ff91a4);color:#3d2437;box-shadow:0 6px 22px #ee855b26}.game.nokoribi{grid-column:1/-1;display:grid;grid-template-columns:1.06fr .94fr}.game.nokoribi .visual{aspect-ratio:auto;min-height:230px}.game.nokoribi .content{justify-content:center}.game.kanji-eight{grid-column:1/-1;display:grid;grid-template-columns:1.06fr .94fr}.game.kanji-eight .visual{aspect-ratio:auto;min-height:226px}.game.kanji-eight .content{justify-content:center}.game.kanji-eight .category{color:#e5d09c}.game.kanji-eight .play{background:linear-gradient(135deg,#ffe0ab,#8bd4d4);color:#183847;box-shadow:0 6px 22px #9fe8da20}.yomichare .category{color:#a4f0dd}.yomichare .play{background:linear-gradient(135deg,#95edd9,#8fb5ef);color:#153548;box-shadow:0 6px 22px #75e5c827}
+.picture-drop .category{color:#90eadb}.picture-drop .play{background:linear-gradient(135deg,#8ef0e0,#91bee6);color:#10334b;box-shadow:0 6px 22px #5cbdb822}.picture{grid-column:1/-1;display:grid;grid-template-columns:1.15fr 1fr}.picture .visual{aspect-ratio:auto;min-height:225px}.picture .content{justify-content:center}.arrow{font-size:19px}
+.foot{padding:24px 5px 0;text-align:center;color:#a0afca;font-size:11px;line-height:1.8}.footer-links{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:7px;margin:11px 0 7px}.footer-links a{color:#bed5e9;text-decoration:underline;text-underline-offset:3px}.footer-links a:focus-visible{outline:2px solid #ffdda9;outline-offset:3px}
+.toast{position:fixed;z-index:10;bottom:calc(env(safe-area-inset-bottom,0px) + 23px);left:50%;transform:translate(-50%,15px);min-width:220px;padding:12px 17px;background:#ede9ff;color:#252044;border-radius:13px;text-align:center;font-weight:850;font-size:12px;box-shadow:0 15px 35px #0007;opacity:0;pointer-events:none;transition:.2s}.toast.show{transform:translate(-50%,0);opacity:1}
+@media(min-width:820px){.games{grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.game.game.game.content{padding:16px 16px 18px}.titleline h3{font-size:22px}}
+@media(min-width:700px){.hero{padding:60px 4px 39px}.wrap{padding-left:30px;padding-right:30px}.lead{font-size:15px}.sectiontop h2{font-size:18px}.content{padding:19px 23px 22px}.explain{font-size:13px}}
+@media(min-width:641px) and (max-width:819px){.game.fruits{grid-column:1/-1;max-width:430px;margin:auto;width:100%}}
+@media(max-width:359px){.wrap{padding-left:12px;padding-right:12px}.hero{padding-top:30px}.titleline h3{font-size:22px}.logo-name{font-size:15px}.share{padding:9px 11px}}
+@media(max-width:640px){.games{grid-template-columns:1fr;gap:16px}.visual{aspect-ratio:340/178}.game{border-radius:18px}.content{gap:6px}.explain{min-height:auto;margin-bottom:5px}.hero{padding-bottom:21px}.picture{display:flex}.picture .visual{aspect-ratio:340/178;min-height:unset}.game.nokoribi{display:flex;flex-direction:column}.game.nokoribi .visual{aspect-ratio:340/178;min-height:unset}.game.kanji-eight{display:flex;flex-direction:column}.game.kanji-eight .visual{aspect-ratio:340/178;min-height:unset}}
+@media(prefers-reduced-motion:reduce){.game,.toast{transition:none}}
+
+/* はしmoto Games category navigator and compact catalog — v2 */
+.category-tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;margin:0 1px 7px}
+.category-tab{min-height:44px;display:flex;align-items:center;justify-content:center;gap:5px;flex-wrap:wrap;padding:8px 5px;border:1px solid #455575;background:#192741;color:#cee1f1;border-radius:12px;font:800 11px system-ui,-apple-system,sans-serif;line-height:1.2;cursor:pointer;transition:background .16s,border-color .16s}
+.category-tab span{font-size:10px;min-width:19px;text-align:center;background:#31435d;border-radius:999px;padding:3px 5px;color:#e1eafd}
+.category-tab[aria-pressed="true"]{background:#a8e5dd;color:#133340;border-color:#b9fcf2;box-shadow:0 4px 15px #6cd5cc22}
+.category-tab[aria-pressed="true"] span{background:#20515d;color:#f4fffd}
+.category-tab:focus-visible{outline:3px solid #ffd486;outline-offset:2px}
+.filter-feedback{margin:0 2px 12px;color:#9fc4d6;font-size:11px;line-height:1.5;min-height:16px}
+#gameCatalog>.game[hidden]{display:none!important}
+@media(min-width:641px){
+ #gameCatalog{grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}
+ #gameCatalog>.game{grid-column:auto!important;display:flex!important;flex-direction:column!important;max-width:none!important;width:auto!important}
+ #gameCatalog>.game>.visual{min-height:0!important;aspect-ratio:16/9!important;height:auto!important}
+ #gameCatalog>.game .content{padding:13px 13px 15px;gap:7px;justify-content:flex-start!important}
+ #gameCatalog>.game .titleline{display:block}
+ #gameCatalog>.game .titleline h3{font-size:19px;line-height:1.2}
+ #gameCatalog>.game .score{margin-top:5px}
+ #gameCatalog>.game .score b{text-align:left}
+ #gameCatalog>.game .explain{min-height:3.2em;margin-bottom:4px;line-height:1.5;font-size:11px}
+ #gameCatalog>.game .play{margin-top:auto;min-height:42px;padding:10px 12px;font-size:12px}
+}
+@media(max-width:640px){
+ .wrap{padding-left:13px;padding-right:13px}
+ .hero{padding:22px 1px 12px}
+ .hero h1{font-size:clamp(29px,7vw,38px);line-height:1.12;margin:10px 0 7px}
+ .lead{font-size:12px;line-height:1.55;margin:8px 0 10px}
+ .features{gap:5px}
+ .feature{padding:5px 7px;font-size:10px}
+ .sectiontop{margin-top:14px;margin-bottom:9px}
+ #gameCatalog{grid-template-columns:1fr;gap:10px}
+ #gameCatalog>.game{display:flex!important;flex-direction:row!important;grid-column:auto!important;align-items:stretch;min-height:126px;max-width:none!important;width:100%!important;border-radius:15px}
+ #gameCatalog>.game>.visual{flex:0 0 112px;width:112px;min-width:112px;min-height:0!important;height:auto!important;aspect-ratio:auto!important;border-right:1px solid #364765;border-bottom:0}
+ #gameCatalog>.game .visual::after{height:22%}
+ #gameCatalog>.game .number{top:6px;left:6px;font-size:8px;padding:4px 6px}
+ #gameCatalog>.game .content{flex:1;padding:10px 11px;gap:4px;justify-content:center!important}
+ #gameCatalog>.game .category{font-size:8px;letter-spacing:.4px;line-height:1.15}
+ #gameCatalog>.game .titleline{display:block}
+ #gameCatalog>.game .titleline h3{font-size:clamp(13px,3.65vw,16px);line-height:1.16;letter-spacing:0}
+ #gameCatalog>.game .score{display:none}
+ #gameCatalog>.game .explain{font-size:10px;line-height:1.45;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;min-height:0;max-height:2.9em;margin:0}
+ #gameCatalog>.game .play{min-height:34px;padding:7px 10px;border-radius:9px;margin-top:auto}
+ #gameCatalog>.game .play span:first-child{font-size:0}
+ #gameCatalog>.game .play span:first-child::after{content:'遊ぶ';font-size:12px}
+ #gameCatalog>.game .play .arrow{font-size:16px}
+ .foot{padding-top:17px}
+}
+@media(max-width:360px){
+ .category-tabs{grid-template-columns:repeat(2,minmax(0,1fr))}
+ #gameCatalog>.game>.visual{flex-basis:96px;width:96px;min-width:96px}
+ #gameCatalog>.game .content{padding:8px 9px}
+ #gameCatalog>.game .titleline h3{font-size:13px}
+}
+
+/* 公開カウンター — 人数はブラウザ単位の推定値。 */
+.visitor-panel{margin:7px 1px 22px;padding:14px 16px;background:linear-gradient(120deg,#152e41,#152439);border:1px solid #3a626e;border-radius:16px}
+.visitor-head{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;color:#93e6dd;font-size:11px;font-weight:900;letter-spacing:.06em;margin-bottom:8px}
+.visitor-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.visitor-grid>div{padding:7px 4px 5px;text-align:center;border-radius:10px;background:#102538}
+.visitor-grid small{display:block;color:#a3bcd0;font-size:10px;font-weight:750}
+.visitor-grid strong{display:block;margin-top:2px;color:#ffdfaa;font-size:clamp(18px,4vw,28px);font-weight:950;font-variant-numeric:tabular-nums;line-height:1.3}
+.visitor-note{color:#91a8bb;font-size:10px;line-height:1.6;margin:8px 0 0}
+@media(max-width:380px){.visitor-panel{padding:10px}.visitor-grid{gap:5px}.visitor-grid small{font-size:9px}.visitor-grid strong{font-size:18px}}
+</style>
+<script src="./cp_analytics.js?v=1"></script>
+</head>
+<body><main class="wrap">
+  <header class="top">
+    <div class="logo"><span class="logo-icon" aria-hidden="true"><i></i><i></i><i></i><i></i></span><div><div class="logo-name">はしmoto Games</div><div class="logo-sub">POCKET GAME CENTER</div></div></div>
+    <button type="button" id="share" class="share" aria-label="このゲームセンターのリンクを共有する"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.7 10.7 6.6-4.4m-6.6 7.2 6.6 4.3"/></svg>シェア</button>
+  </header>
+  <section class="hero">
+    <span class="tag">✦ &nbsp;NOW PLAYING : 08 GAMES</span>
+    <h1>ちょっと暇？<em>1ゲームどう？</em></h1>
+    <p class="lead">落ち物も、絵合わせパズルも、好きなだけ。<br>スマホですぐ遊べる、手作りのゲーム置き場！</p>
+    <div class="features"><span class="feature">📱 スマホ対応</span><span class="feature">⚡ インストール不要</span><span class="feature">🎮 無料・登録なし</span></div>
+  </section>
+
+  <section class="visitor-panel" aria-label="サイトのアクセスカウンター">
+    <div class="visitor-head"><span>🎮 VISITOR COUNTER</span><span>はしmoto Games</span></div>
+    <div class="visitor-grid">
+      <div><small>累計訪問者（推定）</small><strong id="hmVisitorCount" aria-live="polite">--</strong></div>
+      <div><small>今日の訪問者</small><strong id="hmTodayCount">--</strong></div>
+      <div><small>累計PV</small><strong id="hmPVCount">--</strong></div>
+    </div>
+    <p class="visitor-note" id="hmVisitorNote">新サイトの訪問数を2026年11月4日から集計。人数はブラウザ単位の推定値です。旧サイトの過去記録は含みません。</p>
+  </section>
+  <div class="sectiontop"><h2>遊びたいゲームを選ぼう</h2><span class="small">8 GAMES</span></div>
+  <nav class="category-tabs" aria-label="ゲームのカテゴリ" role="group">
+    <button type="button" class="category-tab" data-filter="all" aria-pressed="true">🎮 すべて <span>8</span></button>
+    <button type="button" class="category-tab" data-filter="score" aria-pressed="false">🔥 スコア <span>4</span></button>
+    <button type="button" class="category-tab" data-filter="picture" aria-pressed="false">🖼️ 絵合わせ <span>2</span></button>
+    <button type="button" class="category-tab" data-filter="kanji" aria-pressed="false">🀄 漢字 <span>2</span></button>
+  </nav>
+  <p class="filter-feedback" id="filterFeedback" role="status" aria-live="polite">8作品を表示中。カテゴリを押すと絞り込めるで！</p>
+  <section class="games" id="gameCatalog" aria-label="ゲーム一覧">
+    <article class="game drop" data-category="score">
+      <div class="visual"><span class="number">GAME 01</span><svg preserveAspectRatio="xMidYMid slice" viewBox="0 0 340 215" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="カラフルなブロックを積み上げるゲームのイメージ"><defs><linearGradient id="dpbg" x2="1" y2="1"><stop stop-color="#172b49"/><stop offset="1" stop-color="#090f22"/></linearGradient><pattern id="dpgrid" width="28" height="28" patternUnits="userSpaceOnUse"><rect width="26" height="26" rx="3" fill="#1d2941" fill-opacity=".55" /></pattern><filter id="dpg"><feGaussianBlur stdDeviation="11"/></filter></defs>
+    <rect width="340" height="215" rx="16" fill="url(#dpbg)"/>
+    <circle cx="300" cy="24" r="65" fill="#27d8be" opacity=".14" filter="url(#dpg)"/>
+    <g transform="translate(53 9)"><rect x="0" y="0" width="224" height="196" rx="7" fill="#10192e" stroke="#3b526e" stroke-width="2"/><rect x="6" y="6" width="212" height="184" fill="url(#dpgrid)"/></g><rect x="81" y="147" width="21" height="21" rx="3.8" fill="#69a3ff"/><path d="M84 151h14" stroke="white" opacity=".35" stroke-width="2"/><rect x="81" y="169" width="21" height="21" rx="3.8" fill="#69a3ff"/><path d="M84 173h14" stroke="white" opacity=".35" stroke-width="2"/><rect x="103" y="169" width="21" height="21" rx="3.8" fill="#69a3ff"/><path d="M106 173h14" stroke="white" opacity=".35" stroke-width="2"/><rect x="125" y="169" width="21" height="21" rx="3.8" fill="#69a3ff"/><path d="M128 173h14" stroke="white" opacity=".35" stroke-width="2"/><rect x="147" y="169" width="21" height="21" rx="3.8" fill="#ffb972"/><path d="M150 173h14" stroke="white" opacity=".35" stroke-width="2"/><rect x="169" y="169" width="21" height="21" rx="3.8" fill="#ffb972"/><path d="M172 173h14" stroke="white" opacity=".35" stroke-width="2"/><rect x="169" y="147" width="21" height="21" rx="3.8" fill="#ffb972"/><path d="M172 151h14" stroke="white" opacity=".35" stroke-width="2"/><rect x="191" y="147" width="21" height="21" rx="3.8" fill="#ffb972"/><path d="M194 151h14" stroke="white" opacity=".35" stroke-width="2"/><rect x="191" y="169" width="21" height="21" rx="3.8" fill="#c596ff"/><path d="M194 173h14" stroke="white" opacity=".35" stroke-width="2"/><rect x="213" y="169" width="21" height="21" rx="3.8" fill="#c596ff"/><path d="M216 173h14" stroke="white" opacity=".35" stroke-width="2"/><rect x="213" y="147" width="21" height="21" rx="3.8" fill="#c596ff"/><path d="M216 151h14" stroke="white" opacity=".35" stroke-width="2"/><rect x="235" y="147" width="21" height="21" rx="3.8" fill="#c596ff"/><path d="M238 151h14" stroke="white" opacity=".35" stroke-width="2"/><rect x="59" y="169" width="21" height="21" rx="3.8" fill="#72eec0"/><path d="M62 173h14" stroke="white" opacity=".35" stroke-width="2"/><rect x="59" y="147" width="21" height="21" rx="3.8" fill="#72eec0"/><path d="M62 151h14" stroke="white" opacity=".35" stroke-width="2"/><rect x="103" y="147" width="21" height="21" rx="3.8" fill="#ec789d"/><path d="M106 151h14" stroke="white" opacity=".35" stroke-width="2"/><rect x="103" y="125" width="21" height="21" rx="3.8" fill="#ec789d"/><path d="M106 129h14" stroke="white" opacity=".35" stroke-width="2"/><rect x="125" y="125" width="21" height="21" rx="3.8" fill="#ec789d"/><path d="M128 129h14" stroke="white" opacity=".35" stroke-width="2"/><rect x="125" y="103" width="21" height="21" rx="3.8" fill="#ec789d"/><path d="M128 107h14" stroke="white" opacity=".35" stroke-width="2"/><rect x="147" y="125" width="21" height="21" rx="3.8" fill="#6de2f1"/><path d="M150 129h14" stroke="white" opacity=".35" stroke-width="2"/><rect x="169" y="125" width="21" height="21" rx="3.8" fill="#6de2f1"/><path d="M172 129h14" stroke="white" opacity=".35" stroke-width="2"/><rect x="191" y="125" width="21" height="21" rx="3.8" fill="#6de2f1"/><path d="M194 129h14" stroke="white" opacity=".35" stroke-width="2"/><rect x="191" y="103" width="21" height="21" rx="3.8" fill="#6de2f1"/><path d="M194 107h14" stroke="white" opacity=".35" stroke-width="2"/><rect x="213" y="103" width="21" height="21" rx="3.8" fill="#ffd970"/><path d="M216 107h14" stroke="white" opacity=".35" stroke-width="2"/><rect x="235" y="103" width="21" height="21" rx="3.8" fill="#ffd970"/><path d="M238 107h14" stroke="white" opacity=".35" stroke-width="2"/><rect x="235" y="125" width="21" height="21" rx="3.8" fill="#ffd970"/><path d="M238 129h14" stroke="white" opacity=".35" stroke-width="2"/><rect x="213" y="125" width="21" height="21" rx="3.8" fill="#ffd970"/><path d="M216 129h14" stroke="white" opacity=".35" stroke-width="2"/><rect x="147" y="59" width="21" height="21" rx="3.8" fill="#d69dff"/><path d="M150 63h14" stroke="white" opacity=".35" stroke-width="2"/><rect x="169" y="59" width="21" height="21" rx="3.8" fill="#d69dff"/><path d="M172 63h14" stroke="white" opacity=".35" stroke-width="2"/><rect x="191" y="59" width="21" height="21" rx="3.8" fill="#d69dff"/><path d="M194 63h14" stroke="white" opacity=".35" stroke-width="2"/><rect x="169" y="37" width="21" height="21" rx="3.8" fill="#d69dff"/><path d="M172 41h14" stroke="white" opacity=".35" stroke-width="2"/><g transform="translate(264 24)"><rect width="61" height="40" rx="11" fill="#192f43" stroke="#2a4e62"/><text x="30" y="14" fill="#a9c9d9" font-size="8" font-family="system-ui" text-anchor="middle">SCORE</text><text x="30" y="31" fill="#63edda" font-weight="900" font-size="15" font-family="system-ui" text-anchor="middle">2,480</text></g></svg></div>
+      <div class="content"><div class="category">BLOCK PUZZLE</div><div class="titleline"><h3>CP DROP</h3><div class="score">MY BEST<b id="best-drop">―</b></div></div>
+        <p class="explain">ブロックを横一列にそろえて消そう！<br>回転＆一気落としでハイスコアを狙え。</p>
+        <a class="play" href="./cp_drop.html" aria-label="CP DROPをプレイする"><span>プレイする</span><span class="arrow" aria-hidden="true">↗</span></a>
+      </div>
+    </article>
+    <article class="game chain" data-category="score">
+      <div class="visual"><span class="number">GAME 02</span><svg preserveAspectRatio="xMidYMid slice" viewBox="0 0 340 215" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="かわいい色つきの丸いキャラが連鎖するゲームのイメージ"><defs><linearGradient id="chbg" x2="1" y2="1"><stop stop-color="#29224d"/><stop offset="1" stop-color="#101227"/></linearGradient><pattern id="chgrid" width="32" height="32" patternUnits="userSpaceOnUse"><rect width="30" height="30" rx="6" fill="#312953" fill-opacity=".62"/></pattern><filter id="chglow"><feGaussianBlur stdDeviation="13"/></filter></defs>
+    <rect width="340" height="215" rx="16" fill="url(#chbg)"/>
+    <circle cx="65" cy="160" r="80" fill="#fa7dbb" opacity=".16" filter="url(#chglow)"/>
+    <g transform="translate(65 6)"><rect width="210" height="200" rx="10" fill="#151631" stroke="#6954a3" stroke-width="2"/><rect x="10" y="8" width="190" height="185" fill="url(#chgrid)"/></g><circle cx="93.1" cy="189.1" r="14.6" fill="#050415" opacity=".4"/><circle cx="93.1" cy="188.1" r="14.3" fill="#ff88aa"/><ellipse cx="89.1" cy="183.1" rx="5" ry="3" fill="white" opacity=".30"/><circle cx="89.1" cy="189.29999999999998" r="1.7" fill="#272443"/><circle cx="97.1" cy="189.29999999999998" r="1.7" fill="#272443"/><path d="M 90.1 194.1 Q 93.1 197.1 96.1 194.1" fill="none" stroke="#272443" stroke-width="1.5" stroke-linecap="round"/><circle cx="124.1" cy="189.1" r="14.6" fill="#050415" opacity=".4"/><circle cx="124.1" cy="188.1" r="14.3" fill="#ffa35f"/><ellipse cx="120.1" cy="183.1" rx="5" ry="3" fill="white" opacity=".30"/><circle cx="120.1" cy="189.29999999999998" r="1.7" fill="#272443"/><circle cx="128.1" cy="189.29999999999998" r="1.7" fill="#272443"/><path d="M 121.1 194.1 Q 124.1 197.1 127.1 194.1" fill="none" stroke="#272443" stroke-width="1.5" stroke-linecap="round"/><circle cx="155.1" cy="189.1" r="14.6" fill="#050415" opacity=".4"/><circle cx="155.1" cy="188.1" r="14.3" fill="#69d6fc"/><ellipse cx="151.1" cy="183.1" rx="5" ry="3" fill="white" opacity=".30"/><circle cx="151.1" cy="189.29999999999998" r="1.7" fill="#272443"/><circle cx="159.1" cy="189.29999999999998" r="1.7" fill="#272443"/><path d="M 152.1 194.1 Q 155.1 197.1 158.1 194.1" fill="none" stroke="#272443" stroke-width="1.5" stroke-linecap="round"/><circle cx="186.1" cy="189.1" r="14.6" fill="#050415" opacity=".4"/><circle cx="186.1" cy="188.1" r="14.3" fill="#8bea90"/><ellipse cx="182.1" cy="183.1" rx="5" ry="3" fill="white" opacity=".30"/><circle cx="182.1" cy="189.29999999999998" r="1.7" fill="#272443"/><circle cx="190.1" cy="189.29999999999998" r="1.7" fill="#272443"/><path d="M 183.1 194.1 Q 186.1 197.1 189.1 194.1" fill="none" stroke="#272443" stroke-width="1.5" stroke-linecap="round"/><circle cx="217.1" cy="189.1" r="14.6" fill="#050415" opacity=".4"/><circle cx="217.1" cy="188.1" r="14.3" fill="#b496ff"/><ellipse cx="213.1" cy="183.1" rx="5" ry="3" fill="white" opacity=".30"/><circle cx="213.1" cy="189.29999999999998" r="1.7" fill="#272443"/><circle cx="221.1" cy="189.29999999999998" r="1.7" fill="#272443"/><path d="M 214.1 194.1 Q 217.1 197.1 220.1 194.1" fill="none" stroke="#272443" stroke-width="1.5" stroke-linecap="round"/><circle cx="248.1" cy="189.1" r="14.6" fill="#050415" opacity=".4"/><circle cx="248.1" cy="188.1" r="14.3" fill="#ffa35f"/><ellipse cx="244.1" cy="183.1" rx="5" ry="3" fill="white" opacity=".30"/><circle cx="244.1" cy="189.29999999999998" r="1.7" fill="#272443"/><circle cx="252.1" cy="189.29999999999998" r="1.7" fill="#272443"/><path d="M 245.1 194.1 Q 248.1 197.1 251.1 194.1" fill="none" stroke="#272443" stroke-width="1.5" stroke-linecap="round"/><circle cx="93.1" cy="158.1" r="14.6" fill="#050415" opacity=".4"/><circle cx="93.1" cy="157.1" r="14.3" fill="#ff88aa"/><ellipse cx="89.1" cy="152.1" rx="5" ry="3" fill="white" opacity=".30"/><circle cx="89.1" cy="158.29999999999998" r="1.7" fill="#272443"/><circle cx="97.1" cy="158.29999999999998" r="1.7" fill="#272443"/><path d="M 90.1 163.1 Q 93.1 166.1 96.1 163.1" fill="none" stroke="#272443" stroke-width="1.5" stroke-linecap="round"/><circle cx="124.1" cy="158.1" r="14.6" fill="#050415" opacity=".4"/><circle cx="124.1" cy="157.1" r="14.3" fill="#ffa35f"/><ellipse cx="120.1" cy="152.1" rx="5" ry="3" fill="white" opacity=".30"/><circle cx="120.1" cy="158.29999999999998" r="1.7" fill="#272443"/><circle cx="128.1" cy="158.29999999999998" r="1.7" fill="#272443"/><path d="M 121.1 163.1 Q 124.1 166.1 127.1 163.1" fill="none" stroke="#272443" stroke-width="1.5" stroke-linecap="round"/><circle cx="155.1" cy="158.1" r="14.6" fill="#050415" opacity=".4"/><circle cx="155.1" cy="157.1" r="14.3" fill="#ff88aa"/><ellipse cx="151.1" cy="152.1" rx="5" ry="3" fill="white" opacity=".30"/><circle cx="151.1" cy="158.29999999999998" r="1.7" fill="#272443"/><circle cx="159.1" cy="158.29999999999998" r="1.7" fill="#272443"/><path d="M 152.1 163.1 Q 155.1 166.1 158.1 163.1" fill="none" stroke="#272443" stroke-width="1.5" stroke-linecap="round"/><circle cx="186.1" cy="158.1" r="14.6" fill="#050415" opacity=".4"/><circle cx="186.1" cy="157.1" r="14.3" fill="#8bea90"/><ellipse cx="182.1" cy="152.1" rx="5" ry="3" fill="white" opacity=".30"/><circle cx="182.1" cy="158.29999999999998" r="1.7" fill="#272443"/><circle cx="190.1" cy="158.29999999999998" r="1.7" fill="#272443"/><path d="M 183.1 163.1 Q 186.1 166.1 189.1 163.1" fill="none" stroke="#272443" stroke-width="1.5" stroke-linecap="round"/><circle cx="217.1" cy="158.1" r="14.6" fill="#050415" opacity=".4"/><circle cx="217.1" cy="157.1" r="14.3" fill="#b496ff"/><ellipse cx="213.1" cy="152.1" rx="5" ry="3" fill="white" opacity=".30"/><circle cx="213.1" cy="158.29999999999998" r="1.7" fill="#272443"/><circle cx="221.1" cy="158.29999999999998" r="1.7" fill="#272443"/><path d="M 214.1 163.1 Q 217.1 166.1 220.1 163.1" fill="none" stroke="#272443" stroke-width="1.5" stroke-linecap="round"/><circle cx="248.1" cy="158.1" r="14.6" fill="#050415" opacity=".4"/><circle cx="248.1" cy="157.1" r="14.3" fill="#b496ff"/><ellipse cx="244.1" cy="152.1" rx="5" ry="3" fill="white" opacity=".30"/><circle cx="244.1" cy="158.29999999999998" r="1.7" fill="#272443"/><circle cx="252.1" cy="158.29999999999998" r="1.7" fill="#272443"/><path d="M 245.1 163.1 Q 248.1 166.1 251.1 163.1" fill="none" stroke="#272443" stroke-width="1.5" stroke-linecap="round"/><circle cx="93.1" cy="127.1" r="14.6" fill="#050415" opacity=".4"/><circle cx="93.1" cy="126.1" r="14.3" fill="#69d6fc"/><ellipse cx="89.1" cy="121.1" rx="5" ry="3" fill="white" opacity=".30"/><circle cx="89.1" cy="127.3" r="1.7" fill="#272443"/><circle cx="97.1" cy="127.3" r="1.7" fill="#272443"/><path d="M 90.1 132.1 Q 93.1 135.1 96.1 132.1" fill="none" stroke="#272443" stroke-width="1.5" stroke-linecap="round"/><circle cx="124.1" cy="127.1" r="14.6" fill="#050415" opacity=".4"/><circle cx="124.1" cy="126.1" r="14.3" fill="#ff88aa"/><ellipse cx="120.1" cy="121.1" rx="5" ry="3" fill="white" opacity=".30"/><circle cx="120.1" cy="127.3" r="1.7" fill="#272443"/><circle cx="128.1" cy="127.3" r="1.7" fill="#272443"/><path d="M 121.1 132.1 Q 124.1 135.1 127.1 132.1" fill="none" stroke="#272443" stroke-width="1.5" stroke-linecap="round"/><circle cx="155.1" cy="127.1" r="14.6" fill="#050415" opacity=".4"/><circle cx="155.1" cy="126.1" r="14.3" fill="#8bea90"/><ellipse cx="151.1" cy="121.1" rx="5" ry="3" fill="white" opacity=".30"/><circle cx="151.1" cy="127.3" r="1.7" fill="#272443"/><circle cx="159.1" cy="127.3" r="1.7" fill="#272443"/><path d="M 152.1 132.1 Q 155.1 135.1 158.1 132.1" fill="none" stroke="#272443" stroke-width="1.5" stroke-linecap="round"/><circle cx="186.1" cy="127.1" r="14.6" fill="#050415" opacity=".4"/><circle cx="186.1" cy="126.1" r="14.3" fill="#8bea90"/><ellipse cx="182.1" cy="121.1" rx="5" ry="3" fill="white" opacity=".30"/><circle cx="182.1" cy="127.3" r="1.7" fill="#272443"/><circle cx="190.1" cy="127.3" r="1.7" fill="#272443"/><path d="M 183.1 132.1 Q 186.1 135.1 189.1 132.1" fill="none" stroke="#272443" stroke-width="1.5" stroke-linecap="round"/><circle cx="217.1" cy="127.1" r="14.6" fill="#050415" opacity=".4"/><circle cx="217.1" cy="126.1" r="14.3" fill="#b496ff"/><ellipse cx="213.1" cy="121.1" rx="5" ry="3" fill="white" opacity=".30"/><circle cx="213.1" cy="127.3" r="1.7" fill="#272443"/><circle cx="221.1" cy="127.3" r="1.7" fill="#272443"/><path d="M 214.1 132.1 Q 217.1 135.1 220.1 132.1" fill="none" stroke="#272443" stroke-width="1.5" stroke-linecap="round"/><circle cx="248.1" cy="127.1" r="14.6" fill="#050415" opacity=".4"/><circle cx="248.1" cy="126.1" r="14.3" fill="#69d6fc"/><ellipse cx="244.1" cy="121.1" rx="5" ry="3" fill="white" opacity=".30"/><circle cx="244.1" cy="127.3" r="1.7" fill="#272443"/><circle cx="252.1" cy="127.3" r="1.7" fill="#272443"/><path d="M 245.1 132.1 Q 248.1 135.1 251.1 132.1" fill="none" stroke="#272443" stroke-width="1.5" stroke-linecap="round"/><circle cx="124.1" cy="96.1" r="14.6" fill="#050415" opacity=".4"/><circle cx="124.1" cy="95.1" r="14.3" fill="#69d6fc"/><ellipse cx="120.1" cy="90.1" rx="5" ry="3" fill="white" opacity=".30"/><circle cx="120.1" cy="96.3" r="1.7" fill="#272443"/><circle cx="128.1" cy="96.3" r="1.7" fill="#272443"/><path d="M 121.1 101.1 Q 124.1 104.1 127.1 101.1" fill="none" stroke="#272443" stroke-width="1.5" stroke-linecap="round"/><circle cx="155.1" cy="96.1" r="14.6" fill="#050415" opacity=".4"/><circle cx="155.1" cy="95.1" r="14.3" fill="#69d6fc"/><ellipse cx="151.1" cy="90.1" rx="5" ry="3" fill="white" opacity=".30"/><circle cx="151.1" cy="96.3" r="1.7" fill="#272443"/><circle cx="159.1" cy="96.3" r="1.7" fill="#272443"/><path d="M 152.1 101.1 Q 155.1 104.1 158.1 101.1" fill="none" stroke="#272443" stroke-width="1.5" stroke-linecap="round"/><circle cx="217.1" cy="96.1" r="14.6" fill="#050415" opacity=".4"/><circle cx="217.1" cy="95.1" r="14.3" fill="#ff88aa"/><ellipse cx="213.1" cy="90.1" rx="5" ry="3" fill="white" opacity=".30"/><circle cx="213.1" cy="96.3" r="1.7" fill="#272443"/><circle cx="221.1" cy="96.3" r="1.7" fill="#272443"/><path d="M 214.1 101.1 Q 217.1 104.1 220.1 101.1" fill="none" stroke="#272443" stroke-width="1.5" stroke-linecap="round"/><circle cx="248.1" cy="96.1" r="14.6" fill="#050415" opacity=".4"/><circle cx="248.1" cy="95.1" r="14.3" fill="#ffa35f"/><ellipse cx="244.1" cy="90.1" rx="5" ry="3" fill="white" opacity=".30"/><circle cx="244.1" cy="96.3" r="1.7" fill="#272443"/><circle cx="252.1" cy="96.3" r="1.7" fill="#272443"/><path d="M 245.1 101.1 Q 248.1 104.1 251.1 101.1" fill="none" stroke="#272443" stroke-width="1.5" stroke-linecap="round"/><circle cx="186.1" cy="65.1" r="14.6" fill="#050415" opacity=".4"/><circle cx="186.1" cy="64.1" r="14.3" fill="#8bea90"/><ellipse cx="182.1" cy="59.099999999999994" rx="5" ry="3" fill="white" opacity=".30"/><circle cx="182.1" cy="65.3" r="1.7" fill="#272443"/><circle cx="190.1" cy="65.3" r="1.7" fill="#272443"/><path d="M 183.1 70.1 Q 186.1 73.1 189.1 70.1" fill="none" stroke="#272443" stroke-width="1.5" stroke-linecap="round"/><circle cx="217.1" cy="65.1" r="14.6" fill="#050415" opacity=".4"/><circle cx="217.1" cy="64.1" r="14.3" fill="#8bea90"/><ellipse cx="213.1" cy="59.099999999999994" rx="5" ry="3" fill="white" opacity=".30"/><circle cx="213.1" cy="65.3" r="1.7" fill="#272443"/><circle cx="221.1" cy="65.3" r="1.7" fill="#272443"/><path d="M 214.1 70.1 Q 217.1 73.1 220.1 70.1" fill="none" stroke="#272443" stroke-width="1.5" stroke-linecap="round"/><g><rect x="230" y="11" rx="10" width="100" height="31" fill="#aa4de7"/><text x="280" y="31" fill="white" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="900">2 CHAIN!</text></g></svg></div>
+      <div class="content"><div class="category">COLOR CHAIN PUZZLE</div><div class="titleline"><h3>CP CHAIN</h3><div class="score">MY BEST<b id="best-chain">―</b></div></div>
+        <p class="explain">同じ色を4つつなげて消そう！<br>連鎖が決まると、気持ちええで〜！</p>
+        <a class="play" href="./cp_chain.html" aria-label="CP CHAINをプレイする"><span>プレイする</span><span class="arrow" aria-hidden="true">↗</span></a>
+      </div>
+    </article>
+    <article class="game fruits" data-category="score">
+      <div class="visual"><span class="number">GAME 03</span>
+        <svg preserveAspectRatio="xMidYMid slice" viewBox="0 0 340 215" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="カラフルなフルーツが転がりながら合体するゲームのイメージ">
+          <defs>
+           <linearGradient id="frbg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#3a2d57"/><stop offset="1" stop-color="#152640"/></linearGradient>
+           <radialGradient id="frshine" cx="35%" cy="25%" r="85%"><stop stop-color="#ffffff" stop-opacity=".42"/><stop offset=".35" stop-color="#ffffff" stop-opacity=".05"/><stop offset="1" stop-color="#000000" stop-opacity=".25"/></radialGradient>
+           <filter id="frglow"><feGaussianBlur stdDeviation="12"/></filter>
+          </defs>
+          <rect width="340" height="215" fill="url(#frbg)"/>
+          <circle cx="284" cy="56" r="90" fill="#f8a35c" opacity=".19" filter="url(#frglow)"/>
+          <rect x="52" y="9" width="237" height="198" rx="9" fill="#0f1e39" stroke="#5e628e" stroke-width="2"/>
+          <path d="M54 56 H287" stroke="#ff98a6" stroke-width="1.5" stroke-dasharray="6 5" opacity=".7"/>
+          <path d="M171 30 V193" stroke="#ffe1a1" stroke-width="1.8" stroke-dasharray="3 8" opacity=".62"/>
+          <g>
+            <circle cx="112" cy="174" r="31" fill="#ffa943" stroke="#ffe6a9" stroke-width="2"/>
+            <circle cx="164" cy="171" r="37" fill="#f45162" stroke="#ffadb2" stroke-width="2"/>
+            <circle cx="230" cy="182" r="23" fill="#ae70e9" stroke="#dac0ff" stroke-width="2"/>
+            <circle cx="224" cy="135" r="22" fill="#f45866" stroke="#ffb9c4" stroke-width="2"/>
+            <circle cx="265" cy="163" r="19" fill="#ffb14c" stroke="#ffe1a5" stroke-width="2"/>
+            <circle cx="177" cy="110" r="20" fill="#ff5968" stroke="#ffb4b9" stroke-width="2"/>
+          </g>
+          <g fill="url(#frshine)">
+            <circle cx="112" cy="174" r="31"/><circle cx="164" cy="171" r="37"/><circle cx="230" cy="182" r="23"/><circle cx="224" cy="135" r="22"/><circle cx="265" cy="163" r="19"/><circle cx="177" cy="110" r="20"/>
+          </g>
+          <g font-family="'Apple Color Emoji','Noto Color Emoji','Segoe UI Emoji',sans-serif" text-anchor="middle" dominant-baseline="central">
+            <text x="112" y="174" font-size="35">🍊</text>
+            <text x="164" y="171" font-size="43">🍎</text>
+            <text x="230" y="182" font-size="29">🍇</text>
+            <text x="224" y="135" font-size="29">🍓</text>
+            <text x="265" y="163" font-size="25">🍊</text>
+            <text x="177" y="110" font-size="25">🍒</text>
+          </g>
+          <text x="28" y="42" fill="#ffe19d" font-weight="900" font-size="11" transform="rotate(-12 28 42)">MERGE!</text>
+        </svg>
+      </div>
+      <div class="content"><div class="category">FRUIT MERGE PUZZLE</div><div class="titleline"><h3>CP FRUITS</h3><div class="score">MY BEST<b id="best-fruits">―</b></div></div>
+        <p class="explain">同じフルーツをぶつけて合体！<br>大きく育ててスイカを目指そう！</p>
+        <a class="play" href="./cp_fruits.html" aria-label="CP FRUITSをプレイする"><span>プレイする</span><span class="arrow" aria-hidden="true">↗</span></a>
+      </div>
+    </article>
+    <article class="game picture" data-category="picture">
+      <div class="visual">
+        <span class="number">GAME 04</span>
+        <svg preserveAspectRatio="xMidYMid slice" viewBox="0 0 600 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="夕焼けの湖と山を絵合わせパズルにしたイメージ">
+          <defs>
+            <linearGradient id="ppsky" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#283f77"/><stop offset=".55" stop-color="#cf7796"/><stop offset="1" stop-color="#f8c384"/>
+            </linearGradient>
+            <linearGradient id="pplake" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#9b7aa8"/><stop offset="1" stop-color="#273f69"/>
+            </linearGradient>
+            <clipPath id="ppframe"><rect x="58" y="22" width="484" height="316" rx="16"/></clipPath>
+          </defs>
+          <rect width="600" height="360" fill="#121a32"/>
+          <g clip-path="url(#ppframe)">
+            <rect x="58" y="22" width="484" height="316" fill="url(#ppsky)"/>
+            <circle cx="408" cy="121" r="48" fill="#ffe0a0" opacity=".93"/>
+            <path d="M40 226 137 104 222 198 319 90 417 223 504 142 577 238v115H40z" fill="#293c69"/>
+            <path d="M40 239 148 151 211 222 322 129 415 240 511 191 585 252v100H40z" fill="#46648a"/>
+            <rect x="56" y="237" width="490" height="108" fill="url(#pplake)"/>
+            <path d="M40 247q100 25 200 6t181 0q65 16 142 6v7H40zM40 299q130-18 256-8t270-4" stroke="#fff1bd" stroke-width="3" opacity=".55" fill="none"/>
+            <path d="M90 333q40-95 65-126l6 101 16-51 24 76M479 333l-24-102-10 82-22-38-15 58" fill="#193c45" opacity=".92"/>
+            <g fill="none" stroke="#f6f1dc" stroke-width="3" opacity=".65">
+              <path d="M127 22v316M196 22v316M265 22v316M334 22v316M403 22v316M472 22v316"/>
+              <path d="M58 67h484M58 112h484M58 157h484M58 202h484M58 247h484M58 292h484"/>
+            </g>
+            <path d="M266 156h68v45h-68z" fill="#fff4c8" opacity=".27" stroke="#fff4c8" stroke-width="3"/>
+          </g>
+          <rect x="58" y="22" width="484" height="316" rx="16" fill="none" stroke="#ddd2b4" stroke-width="4"/>
+          <rect x="353" y="25" rx="10" width="171" height="36" fill="#0e203acf"/>
+          <text x="439" y="48" fill="#ffe7b2" font-family="system-ui" font-weight="900" font-size="16" text-anchor="middle">7×7 / 9×9</text>
+        </svg>
+      </div>
+      <div class="content">
+        <div class="category">PICTURE SWAP PUZZLE · 12 STAGES</div>
+        <div class="titleline"><h3>CP PICTURE PUZZLE</h3><div class="score">NEW<b>全12ステージ</b></div></div>
+        <p class="explain">世界の名画・絶景・動物・料理を絵合わせパズルに！<br>同じ形のピースを交換して、初級から上級へ進もう。</p>
+        <a class="play" href="./cp_picture_puzzle.html" aria-label="CP ピクチャーパズルをプレイする"><span>絵合わせパズルを始める</span><span class="arrow" aria-hidden="true">↗</span></a>
+      </div>
+    </article>
+
+    <article class="game picture picture-drop" data-category="picture">
+      <div class="visual">
+        <span class="number">GAME 05 · NEW</span>
+        <svg preserveAspectRatio="xMidYMid slice" viewBox="0 0 340 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="6列のストックから絵のピースが落ちるパズルのイメージ">
+          <defs><linearGradient id="pdark" x2="1" y2="1"><stop stop-color="#142d49"/><stop offset="1" stop-color="#092034"/></linearGradient></defs>
+          <rect width="340" height="300" rx="15" fill="url(#pdark)"/>
+          <rect x="49" y="14" width="242" height="46" rx="9" fill="#1d405a" stroke="#5d829a"/>
+          <rect x="59" y="24" width="35" height="33" rx="4" fill="#305c7f" stroke="#9fcfe2" stroke-width="1.4"/><path d="M68 42l9-11 9 11-9 10z" fill="#d5f8e6" opacity=".8"/><rect x="96" y="24" width="35" height="33" rx="4" fill="#305c7f" stroke="#9fcfe2" stroke-width="1.4"/><path d="M105 42l9-11 9 11-9 10z" fill="#d5f8e6" opacity=".8"/><rect x="133" y="24" width="35" height="33" rx="4" fill="#305c7f" stroke="#9fcfe2" stroke-width="1.4"/><path d="M142 42l9-11 9 11-9 10z" fill="#d5f8e6" opacity=".8"/><rect x="170" y="24" width="35" height="33" rx="4" fill="#305c7f" stroke="#9fcfe2" stroke-width="1.4"/><path d="M179 42l9-11 9 11-9 10z" fill="#d5f8e6" opacity=".8"/><rect x="207" y="24" width="35" height="33" rx="4" fill="#305c7f" stroke="#9fcfe2" stroke-width="1.4"/><path d="M216 42l9-11 9 11-9 10z" fill="#d5f8e6" opacity=".8"/><rect x="244" y="24" width="35" height="33" rx="4" fill="#305c7f" stroke="#9fcfe2" stroke-width="1.4"/><path d="M253 42l9-11 9 11-9 10z" fill="#d5f8e6" opacity=".8"/>
+          <g opacity=".85" stroke="#7ee0d2" stroke-width="2.5" fill="none"><path d="M74 60v7m37-7v7m37-7v7m37-7v7m37-7v7m37-7v7"/></g>
+          <rect x="49" y="65" width="242" height="206" rx="8" fill="#0d233a" stroke="#658a9f" stroke-width="2"/>
+          <rect x="59" y="68" width="35" height="31" fill="#f1aa72"/><rect x="96" y="68" width="35" height="31" fill="#f7c7a4"/><rect x="133" y="68" width="35" height="31" fill="#728eb1"/><rect x="170" y="68" width="35" height="31" fill="#90b6cb"/><rect x="207" y="68" width="35" height="31" fill="#d38ca4"/><rect x="244" y="68" width="35" height="31" fill="#e1aeab"/><rect x="59" y="101" width="35" height="31" fill="#fbded2"/><rect x="96" y="101" width="35" height="31" fill="#9ac5cd"/><rect x="133" y="101" width="35" height="31" fill="#eed2a6"/><rect x="170" y="101" width="35" height="31" fill="#7dc4aa"/><rect x="207" y="101" width="35" height="31" fill="#8bb3c3"/><rect x="244" y="101" width="35" height="31" fill="#f1c7ba"/><rect x="59" y="134" width="35" height="31" fill="#728eb1"/><rect x="96" y="134" width="35" height="31" fill="#90b6cb"/><rect x="133" y="134" width="35" height="31" fill="#d38ca4"/><rect x="170" y="134" width="35" height="31" fill="#e1aeab"/><rect x="207" y="134" width="35" height="31" fill="#f1aa72"/><rect x="244" y="134" width="35" height="31" fill="#f7c7a4"/><rect x="59" y="167" width="35" height="31" fill="#eed2a6"/><rect x="96" y="167" width="35" height="31" fill="#7dc4aa"/><rect x="133" y="167" width="35" height="31" fill="#8bb3c3"/><rect x="170" y="167" width="35" height="31" fill="#f1c7ba"/><rect x="207" y="167" width="35" height="31" fill="#fbded2"/><rect x="244" y="167" width="35" height="31" fill="#9ac5cd"/><rect x="59" y="200" width="35" height="31" fill="#d38ca4"/><rect x="96" y="200" width="35" height="31" fill="#e1aeab"/><rect x="133" y="200" width="35" height="31" fill="#f1aa72"/><rect x="170" y="200" width="35" height="31" fill="#f7c7a4"/><rect x="207" y="200" width="35" height="31" fill="#728eb1"/><rect x="244" y="200" width="35" height="31" fill="#90b6cb"/><rect x="59" y="233" width="35" height="31" fill="#8bb3c3"/><rect x="96" y="233" width="35" height="31" fill="#f1c7ba"/><rect x="133" y="233" width="35" height="31" fill="#fbded2"/><rect x="170" y="233" width="35" height="31" fill="#9ac5cd"/><rect x="207" y="233" width="35" height="31" fill="#eed2a6"/><rect x="244" y="233" width="35" height="31" fill="#7dc4aa"/>
+          <path d="M96 68v198" stroke="#e7f8fc" stroke-width="1.4" opacity=".35"/><path d="M59 101h222" stroke="#e7f8fc" stroke-width="1.4" opacity=".35"/><path d="M133 68v198" stroke="#e7f8fc" stroke-width="1.4" opacity=".35"/><path d="M59 134h222" stroke="#e7f8fc" stroke-width="1.4" opacity=".35"/><path d="M170 68v198" stroke="#e7f8fc" stroke-width="1.4" opacity=".35"/><path d="M59 167h222" stroke="#e7f8fc" stroke-width="1.4" opacity=".35"/><path d="M207 68v198" stroke="#e7f8fc" stroke-width="1.4" opacity=".35"/><path d="M59 200h222" stroke="#e7f8fc" stroke-width="1.4" opacity=".35"/><path d="M244 68v198" stroke="#e7f8fc" stroke-width="1.4" opacity=".35"/><path d="M59 233h222" stroke="#e7f8fc" stroke-width="1.4" opacity=".35"/>
+          <rect x="131" y="134" width="73" height="64" fill="none" stroke="#f9ebb0" stroke-width="3.5" rx="2"/>
+          <path d="M154 161l14-13 13 13-13 12z" fill="#fff4c2" opacity=".73"/>
+          <text x="170" y="290" font-size="11" text-anchor="middle" font-weight="900" fill="#b5efe0">6 × 6  ·  MATCH & DROP</text>
+        </svg>
+      </div>
+      <div class="content">
+        <div class="category">PICTURE MATCH & DROP PUZZLE</div>
+        <div class="titleline"><h3>CP PICTURE DROP</h3><div class="score">NEW<b>採用画像60枚</b></div></div>
+        <p class="explain">6×6のピースを重ねて入れ替え！<br>4枚つなげて消すと、上の6列ストックから新しいカードが落ちてくる。</p>
+        <a class="play" href="./cp_picture_drop.html" aria-label="CP PICTURE DROPをプレイする"><span>ピクチャードロップで遊ぶ</span><span class="arrow" aria-hidden="true">↗</span></a>
+      </div>
+    </article>
+
+    <article class="game nokoribi" data-category="score">
+      <div class="visual">
+        <span class="number">GAME 06</span>
+        <svg preserveAspectRatio="xMidYMid slice" viewBox="0 0 600 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="5×5のカラフルなピースと、消した場所に残る光の輪を使うNOKORIBIのゲームイメージ">
+          <defs>
+            <linearGradient id="nokbg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#231b36"/><stop offset="1" stop-color="#0b2339"/></linearGradient>
+            <radialGradient id="nokglow" cx="50%" cy="50%"><stop stop-color="#faad82" stop-opacity=".28"/><stop offset="1" stop-color="#faad82" stop-opacity="0"/></radialGradient>
+          </defs>
+          <rect width="600" height="360" fill="url(#nokbg)"/>
+          <circle cx="295" cy="172" r="220" fill="url(#nokglow)"/>
+          <rect x="164" y="29" width="277" height="277" rx="17" fill="#081326" stroke="#95749d" stroke-width="2"/>
+          <g><rect x="175" y="39" width="50" height="50" rx="9" fill="#f29d81" stroke="#ffffff66" stroke-width="1.6"/><rect x="178" y="42" width="44" height="19" rx="5" fill="#ffffff" opacity=".12"/><text x="200" y="73" text-anchor="middle" font-size="25" font-weight="900" fill="#112538">◆</text></g><g><rect x="228" y="39" width="50" height="50" rx="9" fill="#92cba9" stroke="#ffffff66" stroke-width="1.6"/><rect x="231" y="42" width="44" height="19" rx="5" fill="#ffffff" opacity=".12"/><text x="253" y="73" text-anchor="middle" font-size="25" font-weight="900" fill="#112538">▲</text></g><g><rect x="281" y="39" width="50" height="50" rx="9" fill="#66c0ca" stroke="#ffffff66" stroke-width="1.6"/><rect x="284" y="42" width="44" height="19" rx="5" fill="#ffffff" opacity=".12"/><text x="306" y="73" text-anchor="middle" font-size="25" font-weight="900" fill="#112538">●</text></g><g><rect x="334" y="39" width="50" height="50" rx="9" fill="#bb9acb" stroke="#ffffff66" stroke-width="1.6"/><rect x="337" y="42" width="44" height="19" rx="5" fill="#ffffff" opacity=".12"/><text x="359" y="73" text-anchor="middle" font-size="25" font-weight="900" fill="#112538">■</text></g><g><rect x="387" y="39" width="50" height="50" rx="9" fill="#f0cb75" stroke="#ffffff66" stroke-width="1.6"/><rect x="390" y="42" width="44" height="19" rx="5" fill="#ffffff" opacity=".12"/><text x="412" y="73" text-anchor="middle" font-size="25" font-weight="900" fill="#112538">✦</text></g><g><rect x="175" y="92" width="50" height="50" rx="9" fill="#66c0ca" stroke="#ffffff66" stroke-width="1.6"/><rect x="178" y="95" width="44" height="19" rx="5" fill="#ffffff" opacity=".12"/><text x="200" y="126" text-anchor="middle" font-size="25" font-weight="900" fill="#112538">●</text></g><g><rect x="228" y="92" width="50" height="50" rx="9" fill="#92cba9" stroke="#ffffff66" stroke-width="1.6"/><rect x="231" y="95" width="44" height="19" rx="5" fill="#ffffff" opacity=".12"/><text x="253" y="126" text-anchor="middle" font-size="25" font-weight="900" fill="#112538">▲</text></g><g><rect x="281" y="92" width="50" height="50" rx="9" fill="#92cba9" stroke="#ffffff66" stroke-width="1.6"/><rect x="284" y="95" width="44" height="19" rx="5" fill="#ffffff" opacity=".12"/><text x="306" y="126" text-anchor="middle" font-size="25" font-weight="900" fill="#112538">▲</text></g><g><rect x="334" y="92" width="50" height="50" rx="9" fill="#f0cb75" stroke="#ffffff66" stroke-width="1.6"/><rect x="337" y="95" width="44" height="19" rx="5" fill="#ffffff" opacity=".12"/><text x="359" y="126" text-anchor="middle" font-size="25" font-weight="900" fill="#112538">✦</text></g><g><rect x="387" y="92" width="50" height="50" rx="9" fill="#f29d81" stroke="#ffffff66" stroke-width="1.6"/><rect x="390" y="95" width="44" height="19" rx="5" fill="#ffffff" opacity=".12"/><text x="412" y="126" text-anchor="middle" font-size="25" font-weight="900" fill="#112538">◆</text></g><g><rect x="175" y="145" width="50" height="50" rx="9" fill="#f0cb75" stroke="#ffffff66" stroke-width="1.6"/><rect x="178" y="148" width="44" height="19" rx="5" fill="#ffffff" opacity=".12"/><text x="200" y="179" text-anchor="middle" font-size="25" font-weight="900" fill="#112538">✦</text></g><g><rect x="228" y="145" width="50" height="50" rx="9" fill="#66c0ca" stroke="#ffffff66" stroke-width="1.6"/><rect x="231" y="148" width="44" height="19" rx="5" fill="#ffffff" opacity=".12"/><text x="253" y="179" text-anchor="middle" font-size="25" font-weight="900" fill="#112538">●</text></g><g><rect x="281" y="145" width="50" height="50" rx="9" fill="#92cba9" stroke="#ffffff66" stroke-width="1.6"/><rect x="284" y="148" width="44" height="19" rx="5" fill="#ffffff" opacity=".12"/><text x="306" y="179" text-anchor="middle" font-size="25" font-weight="900" fill="#112538">▲</text></g><g><rect x="334" y="145" width="50" height="50" rx="9" fill="#bb9acb" stroke="#ffffff66" stroke-width="1.6"/><rect x="337" y="148" width="44" height="19" rx="5" fill="#ffffff" opacity=".12"/><text x="359" y="179" text-anchor="middle" font-size="25" font-weight="900" fill="#112538">■</text></g><g><rect x="387" y="145" width="50" height="50" rx="9" fill="#f29d81" stroke="#ffffff66" stroke-width="1.6"/><rect x="390" y="148" width="44" height="19" rx="5" fill="#ffffff" opacity=".12"/><text x="412" y="179" text-anchor="middle" font-size="25" font-weight="900" fill="#112538">◆</text></g><g><rect x="175" y="198" width="50" height="50" rx="9" fill="#bb9acb" stroke="#ffffff66" stroke-width="1.6"/><rect x="178" y="201" width="44" height="19" rx="5" fill="#ffffff" opacity=".12"/><text x="200" y="232" text-anchor="middle" font-size="25" font-weight="900" fill="#112538">■</text></g><g><rect x="228" y="198" width="50" height="50" rx="9" fill="#f29d81" stroke="#ffffff66" stroke-width="1.6"/><rect x="231" y="201" width="44" height="19" rx="5" fill="#ffffff" opacity=".12"/><text x="253" y="232" text-anchor="middle" font-size="25" font-weight="900" fill="#112538">◆</text></g><g><rect x="281" y="198" width="50" height="50" rx="9" fill="#f0cb75" stroke="#ffffff66" stroke-width="1.6"/><rect x="284" y="201" width="44" height="19" rx="5" fill="#ffffff" opacity=".12"/><text x="306" y="232" text-anchor="middle" font-size="25" font-weight="900" fill="#112538">✦</text></g><g><rect x="334" y="198" width="50" height="50" rx="9" fill="#66c0ca" stroke="#ffffff66" stroke-width="1.6"/><rect x="337" y="201" width="44" height="19" rx="5" fill="#ffffff" opacity=".12"/><text x="359" y="232" text-anchor="middle" font-size="25" font-weight="900" fill="#112538">●</text></g><g><rect x="387" y="198" width="50" height="50" rx="9" fill="#f0cb75" stroke="#ffffff66" stroke-width="1.6"/><rect x="390" y="201" width="44" height="19" rx="5" fill="#ffffff" opacity=".12"/><text x="412" y="232" text-anchor="middle" font-size="25" font-weight="900" fill="#112538">✦</text></g><g><rect x="175" y="251" width="50" height="50" rx="9" fill="#92cba9" stroke="#ffffff66" stroke-width="1.6"/><rect x="178" y="254" width="44" height="19" rx="5" fill="#ffffff" opacity=".12"/><text x="200" y="285" text-anchor="middle" font-size="25" font-weight="900" fill="#112538">▲</text></g><g><rect x="228" y="251" width="50" height="50" rx="9" fill="#bb9acb" stroke="#ffffff66" stroke-width="1.6"/><rect x="231" y="254" width="44" height="19" rx="5" fill="#ffffff" opacity=".12"/><text x="253" y="285" text-anchor="middle" font-size="25" font-weight="900" fill="#112538">■</text></g><g><rect x="281" y="251" width="50" height="50" rx="9" fill="#f29d81" stroke="#ffffff66" stroke-width="1.6"/><rect x="284" y="254" width="44" height="19" rx="5" fill="#ffffff" opacity=".12"/><text x="306" y="285" text-anchor="middle" font-size="25" font-weight="900" fill="#112538">◆</text></g><g><rect x="334" y="251" width="50" height="50" rx="9" fill="#f0cb75" stroke="#ffffff66" stroke-width="1.6"/><rect x="337" y="254" width="44" height="19" rx="5" fill="#ffffff" opacity=".12"/><text x="359" y="285" text-anchor="middle" font-size="25" font-weight="900" fill="#112538">✦</text></g><g><rect x="387" y="251" width="50" height="50" rx="9" fill="#66c0ca" stroke="#ffffff66" stroke-width="1.6"/><rect x="390" y="254" width="44" height="19" rx="5" fill="#ffffff" opacity=".12"/><text x="412" y="285" text-anchor="middle" font-size="25" font-weight="900" fill="#112538">●</text></g>
+          <circle cx="200" cy="117" r="24" fill="none" stroke="#fff7c7" stroke-width="4" opacity=".9"/><circle cx="200" cy="117" r="19" fill="none" stroke="#f29d81" stroke-width="4" stroke-dasharray="8 4" opacity=".95"/><circle cx="359" cy="223" r="24" fill="none" stroke="#fff7c7" stroke-width="4" opacity=".9"/><circle cx="359" cy="223" r="19" fill="none" stroke="#f0cb75" stroke-width="4" stroke-dasharray="8 4" opacity=".95"/><circle cx="412" cy="276" r="24" fill="none" stroke="#fff7c7" stroke-width="4" opacity=".9"/><circle cx="412" cy="276" r="19" fill="none" stroke="#66c0ca" stroke-width="4" stroke-dasharray="8 4" opacity=".95"/>
+          <g stroke="#ffd59b" stroke-width="3.5" stroke-linecap="round" fill="none" opacity=".95">
+            <path d="M137 146l-12 12 12 12M126 158h26"/>
+            <path d="M464 146l12 12-12 12M475 158h-26"/>
+            <path d="M290 14l12-12 12 12M302 2v21"/>
+            <path d="M290 318l12 12 12-12M302 330v-16"/>
+          </g>
+          <text x="302" y="344" fill="#ffd7a3" font-size="12" font-weight="900" text-anchor="middle">SHIFT · MATCH · IGNITE</text>
+        </svg>
+      </div>
+      <div class="content">
+        <div class="category">CP ORIGINAL · CHAIN PUZZLE</div>
+        <div class="titleline"><h3>CP NOKORIBI</h3><div class="score">20 TURNS<b>連鎖で高得点</b></div></div>
+        <p class="explain">行・列をずらして3つ揃えよう。消した場所に残る「のこり火」が、あとから連鎖を呼ぶ。<br>20手でどこまで得点を伸ばせる？</p>
+        <a class="play" href="./cp_nokoribi.html" aria-label="CP NOKORIBI のこり火を遊ぶ"><span>のこり火で遊ぶ</span><span class="arrow" aria-hidden="true">↗</span></a>
+      </div>
+    </article>
+
+    <article class="game kanji-eight" data-category="kanji">
+      <div class="visual">
+        <span class="number">GAME 07 · NEW</span>
+        <svg preserveAspectRatio="xMidYMid slice" viewBox="0 0 600 330" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="難しい漢字の8ピースを動かして揃える3×3スライドパズル">
+          <defs>
+            <linearGradient id="kanji8bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#223e4a"/><stop offset=".55" stop-color="#1e243c"/><stop offset="1" stop-color="#4c3447"/></linearGradient>
+            <clipPath id="k8clip0"><rect x="170" y="29" width="83" height="83" rx="7"/></clipPath><clipPath id="k8clip1"><rect x="257" y="29" width="83" height="83" rx="7"/></clipPath><clipPath id="k8clip2"><rect x="344" y="29" width="83" height="83" rx="7"/></clipPath><clipPath id="k8clip3"><rect x="170" y="116" width="83" height="83" rx="7"/></clipPath><clipPath id="k8clip4"><rect x="257" y="116" width="83" height="83" rx="7"/></clipPath><clipPath id="k8clip5"><rect x="344" y="116" width="83" height="83" rx="7"/></clipPath><clipPath id="k8clip6"><rect x="170" y="203" width="83" height="83" rx="7"/></clipPath><clipPath id="k8clip7"><rect x="257" y="203" width="83" height="83" rx="7"/></clipPath>
+          </defs>
+          <rect width="600" height="330" fill="url(#kanji8bg)"/>
+          <circle cx="475" cy="120" r="160" fill="#cbb3ac" opacity=".06"/>
+          <rect x="162" y="21" width="278" height="278" rx="17" fill="#081827" stroke="#85d5d5" stroke-width="2"/>
+          <rect x="170" y="29" width="83" height="83" rx="7" fill="#f5dcaa" stroke="#fff8e1" stroke-width="1.5"/><g clip-path="url(#k8clip0)"><g transform="translate(0 0)"><text x="296" y="239" font-family="'Noto Serif JP','Yu Mincho',serif" font-size="238" font-weight="900" fill="#273d50" text-anchor="middle">鬱</text></g></g><rect x="174" y="33" width="75" height="14" rx="4" fill="#ffffff" opacity=".13"/><rect x="257" y="29" width="83" height="83" rx="7" fill="#f5dcaa" stroke="#fff8e1" stroke-width="1.5"/><g clip-path="url(#k8clip1)"><g transform="translate(0 -87)"><text x="296" y="239" font-family="'Noto Serif JP','Yu Mincho',serif" font-size="238" font-weight="900" fill="#273d50" text-anchor="middle">鬱</text></g></g><rect x="261" y="33" width="75" height="14" rx="4" fill="#ffffff" opacity=".13"/><rect x="344" y="29" width="83" height="83" rx="7" fill="#f5dcaa" stroke="#fff8e1" stroke-width="1.5"/><g clip-path="url(#k8clip2)"><g transform="translate(0 0)"><text x="296" y="239" font-family="'Noto Serif JP','Yu Mincho',serif" font-size="238" font-weight="900" fill="#273d50" text-anchor="middle">鬱</text></g></g><rect x="348" y="33" width="75" height="14" rx="4" fill="#ffffff" opacity=".13"/><rect x="170" y="116" width="83" height="83" rx="7" fill="#f5dcaa" stroke="#fff8e1" stroke-width="1.5"/><g clip-path="url(#k8clip3)"><g transform="translate(0 0)"><text x="296" y="239" font-family="'Noto Serif JP','Yu Mincho',serif" font-size="238" font-weight="900" fill="#273d50" text-anchor="middle">鬱</text></g></g><rect x="174" y="120" width="75" height="14" rx="4" fill="#ffffff" opacity=".13"/><rect x="257" y="116" width="83" height="83" rx="7" fill="#f5dcaa" stroke="#fff8e1" stroke-width="1.5"/><g clip-path="url(#k8clip4)"><g transform="translate(0 87)"><text x="296" y="239" font-family="'Noto Serif JP','Yu Mincho',serif" font-size="238" font-weight="900" fill="#273d50" text-anchor="middle">鬱</text></g></g><rect x="261" y="120" width="75" height="14" rx="4" fill="#ffffff" opacity=".13"/><rect x="344" y="116" width="83" height="83" rx="7" fill="#f5dcaa" stroke="#fff8e1" stroke-width="1.5"/><g clip-path="url(#k8clip5)"><g transform="translate(0 0)"><text x="296" y="239" font-family="'Noto Serif JP','Yu Mincho',serif" font-size="238" font-weight="900" fill="#273d50" text-anchor="middle">鬱</text></g></g><rect x="348" y="120" width="75" height="14" rx="4" fill="#ffffff" opacity=".13"/><rect x="170" y="203" width="83" height="83" rx="7" fill="#f5dcaa" stroke="#fff8e1" stroke-width="1.5"/><g clip-path="url(#k8clip6)"><g transform="translate(0 0)"><text x="296" y="239" font-family="'Noto Serif JP','Yu Mincho',serif" font-size="238" font-weight="900" fill="#273d50" text-anchor="middle">鬱</text></g></g><rect x="174" y="207" width="75" height="14" rx="4" fill="#ffffff" opacity=".13"/><rect x="257" y="203" width="83" height="83" rx="7" fill="#f5dcaa" stroke="#fff8e1" stroke-width="1.5"/><g clip-path="url(#k8clip7)"><g transform="translate(-87 0)"><text x="296" y="239" font-family="'Noto Serif JP','Yu Mincho',serif" font-size="238" font-weight="900" fill="#273d50" text-anchor="middle">鬱</text></g></g><rect x="261" y="207" width="75" height="14" rx="4" fill="#ffffff" opacity=".13"/><rect x="344" y="203" width="83" height="83" rx="7" fill="#122a40" stroke="#c9d5cf" stroke-opacity=".35" stroke-dasharray="5 6"/>
+          <path d="M456 123h39m0 0-12-11m12 11-12 11" fill="none" stroke="#9de2da" stroke-linecap="round" stroke-width="3.5"/>
+          <text x="301" y="316" text-anchor="middle" fill="#b6e9df" font-size="12" letter-spacing="1.1" font-weight="900">3 × 3  ·  KANJI SLIDE PUZZLE</text>
+        </svg>
+      </div>
+      <div class="content">
+        <div class="category">KANJI · 8 SLIDE PUZZLE</div>
+        <div class="titleline"><h3>CP 漢字8パズル</h3><div class="score">3 LEVELS<b>難しい漢字28種</b></div></div>
+        <p class="explain">空きマスの隣を動かして、難しい漢字を完成させよう。<br>「難しい」「超難問」も選べる本格スライドパズル。</p>
+        <a class="play" href="./cp_kanji_eight.html" aria-label="CP 漢字8パズルをプレイする"><span>漢字8パズルで遊ぶ</span><span class="arrow" aria-hidden="true">↗</span></a>
+      </div>
+    </article>
+
+    <article class="game yomichare" data-category="kanji">
+      <div class="visual">
+        <span class="number">GAME 08 · NEW</span>
+        <svg preserveAspectRatio="xMidYMid slice" viewBox="0 0 600 330" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="難読漢字の読み方を入力する「よみチャレ！」のゲームイメージ">
+          <defs>
+            <linearGradient id="yomiBg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#1b4960"/><stop offset=".52" stop-color="#172d48"/><stop offset="1" stop-color="#2c2448"/></linearGradient>
+            <linearGradient id="yomiButton" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#95f1db"/><stop offset="1" stop-color="#75bce5"/></linearGradient>
+            <filter id="yomiGlow"><feGaussianBlur stdDeviation="20"/></filter>
+          </defs>
+          <rect width="600" height="330" fill="url(#yomiBg)"/>
+          <circle cx="115" cy="55" r="88" fill="#75e5ce" opacity=".12" filter="url(#yomiGlow)"/>
+          <circle cx="521" cy="259" r="112" fill="#f9d28a" opacity=".1" filter="url(#yomiGlow)"/>
+          <rect x="118" y="34" width="364" height="267" rx="21" fill="#0e2035" stroke="#618898" stroke-width="2"/>
+          <rect x="127" y="42" width="346" height="6" rx="3" fill="#9be5da"/>
+          <text x="300" y="75" text-anchor="middle" fill="#8fe6d7" font-family="system-ui,sans-serif" font-size="15" font-weight="900" letter-spacing="1">KANJI READING CHALLENGE</text>
+          <rect x="151" y="94" width="298" height="113" rx="12" fill="#19364a" stroke="#395a72"/>
+          <text x="300" y="124" text-anchor="middle" fill="#a9c9d8" font-size="12" font-family="system-ui,sans-serif" font-weight="800">この漢字、なんて読む？</text>
+          <text x="300" y="187" text-anchor="middle" fill="#ffedc6" font-size="58" font-family="'Yu Mincho','Noto Serif JP',serif" font-weight="900">躊躇</text>
+          <rect x="151" y="219" width="209" height="46" rx="10" fill="#e8f8fc"/>
+          <text x="169" y="249" fill="#52748a" font-size="17" font-family="system-ui,sans-serif" font-weight="900">よみを入力…</text>
+          <rect x="369" y="219" width="80" height="46" rx="10" fill="url(#yomiButton)"/>
+          <text x="409" y="249" text-anchor="middle" fill="#153647" font-size="16" font-family="system-ui,sans-serif" font-weight="1000">回答 ▶</text>
+          <rect x="172" y="276" width="119" height="17" rx="8" fill="#255348"/>
+          <text x="231" y="288" text-anchor="middle" font-size="10" font-weight="900" fill="#b9fae3" font-family="system-ui,sans-serif">21問 レベルアップ</text>
+          <rect x="300" y="276" width="128" height="17" rx="8" fill="#594435"/>
+          <text x="364" y="288" text-anchor="middle" font-size="10" font-weight="900" fill="#ffe8b5" font-family="system-ui,sans-serif">30問 サバイバル</text>
+        </svg>
+      </div>
+      <div class="content">
+        <div class="category">KANJI · QUIZ & STUDY</div>
+        <div class="titleline"><h3>よみチャレ！</h3><div class="score">NEW<b>漢字700語・漢字帳</b></div></div>
+        <p class="explain">漢字の読みを入力して挑戦！<br>21問レベルアップ・30問サバイバル。苦手な漢字は漢字帳で復習できるで！</p>
+        <a class="play" href="./cp_yomichare.html" aria-label="よみチャレ！をプレイする"><span>よみチャレ！で遊ぶ</span><span class="arrow" aria-hidden="true">↗</span></a>
+      </div>
+    </article>
+  </section>
+  <footer class="foot">好きなゲームを選んで、タップするだけ。<br>自己ベストや絵合わせパズルの進行状況も保存できるで 🏆
+  <nav class="footer-links" aria-label="サイト情報"><a href="./about.html">サイトについて</a><span aria-hidden="true">｜</span><a href="./credits.html">画像・著作権</a></nav>
+  <span>© 2026 はしmoto Games</span>
+</footer>
+</main><div id="toast" class="toast" role="status" aria-live="polite"></div>
+<script>
+(()=>{
+ const $=s=>document.querySelector(s);
+ for(const [id,key] of [['#best-drop','cpdrop-best-v1'],['#best-chain','cp-chain-best-v1'],['#best-fruits','cp-fruits-best-v1']]){try{let score=Number(localStorage.getItem(key))||0;if(score>0)$(id).textContent=score.toLocaleString('ja-JP')}catch(_){}}
+ 
+
+ const filters=[...document.querySelectorAll('.category-tab')];
+ const cards=[...document.querySelectorAll('#gameCatalog > .game')];
+ const categories={all:'すべて',score:'スコア・連鎖',picture:'絵合わせ',kanji:'漢字'};
+ function chooseCategory(category){
+  if(!Object.prototype.hasOwnProperty.call(categories,category))category='all';
+  for(const b of filters)b.setAttribute('aria-pressed',String(b.dataset.filter===category));
+  let count=0;
+  for(const card of cards){card.hidden=category!=='all'&&card.dataset.category!==category;if(!card.hidden)count++;}
+  const description=category==='all'?'8作品すべて':categories[category];
+  document.getElementById('filterFeedback').textContent=description+'：'+count+'作品を表示中';
+ }
+ filters.forEach(b=>b.addEventListener('click',()=>chooseCategory(b.dataset.filter)));
+ chooseCategory('all');
+
+ const toast=$('#toast');let timer;
+ function show(message){toast.textContent=message;toast.classList.add('show');clearTimeout(timer);timer=setTimeout(()=>toast.classList.remove('show'),2600)}
+ async function share(){
+  if(location.protocol==='file:'){show('Web公開したURLからシェアしてな！');return}
+  const url=location.href;
+  if(navigator.share){try{await navigator.share({title:'はしmoto Games',text:'8本のミニゲームで遊べるで🎮',url});return}catch(e){if(e?.name==='AbortError')return}}
+  try{await navigator.clipboard.writeText(url);show('リンクをコピーしたで！LINEに貼ってな')}catch(e){
+    const t=document.createElement('textarea');t.value=url;t.style.position='fixed';t.style.opacity='0';document.body.appendChild(t);t.select();const ok=document.execCommand('copy');t.remove();show(ok?'リンクをコピーしたで！LINEに貼ってな':'このページのURLをLINEに送ってな')
+  }
+ }
+ $('#share').addEventListener('click',share);
+})();
+</script>
+</body>
+</html>
