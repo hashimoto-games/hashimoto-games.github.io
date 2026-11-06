@@ -48,6 +48,7 @@ footer{text-align:center;margin-top:22px;color:#849bb3;font-size:10px}
 <details class="rules"><summary>遊び方を見る</summary><p>3・2・1・GO! のあと、9つのパネルが順番に光ります。すべて光り終わったら、覚えた順にパネルをタップ！正解すると、同じ順番の最後に1つだけ増え、次のレベルが自動で始まります。同じパネルが続けて光る場合もあります。何レベルまでクリアできるか挑戦しよう！</p></details>
 <footer>© 2026 はしmoto Games</footer>
 </main>
+<script src="./ranking.js?v=6"></script>
 <script>
 (()=>{
 'use strict';
@@ -115,7 +116,9 @@ function press(i){
  if(sequence[answerIndex]!==i){
   phase='failed';tile.classList.add('wrong');
   $('action').hidden=false;$('action').textContent='↻ もう一度挑戦';
-  render('❌ ゲームオーバー','LEVEL '+level+' / '+answerIndex+'マスまで正解');return;
+  render('❌ ゲームオーバー','LEVEL '+level+' / '+answerIndex+'マスまで正解');
+  if(level>1)window.CPLeaderboard?.finish('memory9',level-1);
+  return;
  }
  tile.classList.add('hit');
  setTimeout(()=>{if(id===runId)tile.classList.remove('hit')},170);
@@ -134,7 +137,8 @@ function press(i){
  })();
 }
 $('action').addEventListener('click',()=>{
- runId++;level=1;answerIndex=0;sequence=Array.from({length:4},randomTile);play();
+ runId++;level=1;answerIndex=0;sequence=Array.from({length:4},randomTile);
+ window.CPLeaderboard?.start('memory9');play();
 });
 render('準備はOK？','最初は4マスからスタート！');
 })();
