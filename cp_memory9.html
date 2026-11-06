@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b1726">
+<meta name="description" content="CP MEMORY 9｜9マスの光った順番を覚えて挑戦！4回から始まり、3レベルごとにスピードアップする無料の記憶力ゲーム。">
+<meta property="og:title" content="CP MEMORY 9｜はしmoto Games">
+<meta property="og:description" content="9マスの光を覚えよう！どこまで記憶できる？">
+<title>CP MEMORY 9｜はしmoto Games</title>
+<link rel="canonical" href="https://hashimoto-games.github.io/cp_memory9.html">
+<style>
+:root{color-scheme:dark;font-family:system-ui,-apple-system,"Noto Sans JP",sans-serif}
+*{box-sizing:border-box}html{background:#071322}body{margin:0;min-height:100dvh;background:radial-gradient(ellipse at 15% 5%,#294f7377,transparent 55%),radial-gradient(ellipse at 95% 80%,#39275455,transparent 50%),#071322;color:#f0f6ff}
+button,a{-webkit-tap-highlight-color:transparent}button{font:inherit;cursor:pointer}button:focus-visible,a:focus-visible{outline:3px solid #ffdb90;outline-offset:3px}
+.wrap{width:min(100%,500px);padding:12px 15px max(25px,env(safe-area-inset-bottom,20px));margin:0 auto}
+header{display:flex;justify-content:space-between;align-items:center;gap:10px}header a{color:#a5e9e0;text-decoration:none;font-weight:800;font-size:12px}.brand{font-size:11px;color:#9eb6cd;font-weight:800}
+h1{font-size:clamp(30px,8vw,41px);text-align:center;letter-spacing:.05em;margin:18px 0 5px;font-weight:1000}h1 span{color:#ffe192}.sub{text-align:center;color:#aac2d6;font-size:12px;margin:0 0 19px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}.stat{background:#142c43;border:1px solid #38556d;border-radius:14px;padding:10px 5px;text-align:center}.stat small{display:block;color:#aac2d4;font-size:10px;font-weight:800}.stat strong{font-size:27px;font-weight:950;font-variant-numeric:tabular-nums;line-height:1.4}.stat:last-child strong{color:#ffe29b}
+.speed{text-align:center;color:#ffcf84;font-size:12px;font-weight:900;margin:12px 0 8px;letter-spacing:.06em}
+.status{border:1px solid #365b70;background:#11263a;border-radius:15px;min-height:73px;padding:12px 10px;text-align:center}.status strong{display:block;font-size:19px}.status p{color:#afcadb;font-size:12px;margin:5px 0 0}
+.track{height:6px;background:#254257;border-radius:12px;overflow:hidden;margin:12px 0}.track div{height:100%;background:#5ce4c0;width:0;transition:width .1s}
+.boardwrap{position:relative;max-width:354px;margin:0 auto}.board{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.tile{aspect-ratio:1;border:2px solid #567c99;border-radius:16px;background:linear-gradient(145deg,#25465f,#162d46);touch-action:manipulation;transition:background .08s,transform .08s,box-shadow .08s;border-width:2px;position:relative;min-width:0}
+.tile:disabled{cursor:default;opacity:1}.tile.lit{background:#ffe184;border-color:#fff5bb;box-shadow:0 0 24px #ffd86799;transform:scale(1.04)}
+.tile.hit{background:#52d9ad;border-color:#c7ffe8}.tile.wrong{background:#f05f70;border-color:#ffcad1}
+.overlay{position:absolute;inset:0;z-index:3;border-radius:16px;background:#061322e8;display:grid;place-content:center;text-align:center;pointer-events:none}
+.overlay[hidden]{display:none}.count{font-size:clamp(70px,22vw,112px);color:#ffe18f;line-height:1.05;font-weight:1000;text-shadow:0 0 28px #ffd27877}.countsub{font-weight:900;font-size:13px;letter-spacing:.08em;color:#d9effb;margin-top:5px}
+.action{width:100%;display:block;padding:14px;border:0;border-radius:14px;background:linear-gradient(135deg,#91f6d6,#64d8df);color:#102c39;font-size:16px;font-weight:1000;margin-top:15px;box-shadow:0 8px 20px #3bcda322}.action[hidden]{display:none}
+.hint{font-size:12px;color:#9fb4cb;text-align:center;margin:12px 0 7px;line-height:1.7}
+.rules{margin:18px 0 0;border:1px solid #304b64;border-radius:14px;background:#101e31;padding:13px 16px}.rules summary{font-size:13px;font-weight:850;cursor:pointer;color:#c7e8ec}.rules p{font-size:12px;line-height:1.85;color:#bfd0df;margin:10px 0 0}
+footer{text-align:center;margin-top:22px;color:#849bb3;font-size:10px}
+@media(max-height:750px){h1{margin-top:10px}.sub{margin-bottom:10px}.tile{border-radius:13px}.board{gap:7px}.stats .stat{padding:6px 5px}}
+@media(prefers-reduced-motion:reduce){.tile,.track div{transition:none}}
+</style>
+<script src="./cp_analytics.js?v=1" defer></script>
+</head>
+<body><main class="wrap">
+<header><a href="./index.html">← ゲーム一覧へ戻る</a><span class="brand">はしmoto Games</span></header>
+<h1>CP <span>MEMORY 9</span></h1>
+<p class="sub">光った順番、どこまで覚えられる？</p>
+<div class="stats"><div class="stat"><small>LEVEL</small><strong id="level">1</strong></div><div class="stat"><small>覚える数</small><strong id="length">4</strong></div><div class="stat"><small>MY BEST</small><strong id="best">0</strong></div></div>
+<div class="speed" id="speed">⚡ SPEED 1 / 6</div>
+<div class="status" role="status" aria-live="polite"><strong id="status">準備はOK？</strong><p id="detail">最初は4マスからスタート！</p></div>
+<div class="track"><div id="progress"></div></div>
+<div class="boardwrap"><div id="board" class="board" aria-label="3×3の記憶パネル"></div><div id="overlay" class="overlay" hidden aria-hidden="true"><div class="count" id="count">3</div><div class="countsub" id="countLabel">READY?</div></div></div>
+<button type="button" class="action" id="action">▶ ゲームスタート</button>
+<p class="hint">正解で1つ追加！3レベルごとにスピードUP ⚡<br>1回でも間違えたらゲームオーバー</p>
+<details class="rules"><summary>遊び方を見る</summary><p>3・2・1・GO! のあと、9つのパネルが順番に光ります。すべて光り終わったら、覚えた順にパネルをタップ！正解すると、同じ順番の最後に1つだけ増え、次のレベルが自動で始まります。同じパネルが続けて光る場合もあります。何レベルまでクリアできるか挑戦しよう！</p></details>
+<footer>© 2026 はしmoto Games</footer>
+</main>
+<script>
+(()=>{
+'use strict';
+const $=id=>document.getElementById(id);
+const tiles=[],board=$('board');
+const BEST_KEY='cp-memory9-best-v1';
+const onTimes=[450,400,350,300,250,220];
+const gapTimes=[220,195,170,150,135,120];
+const sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms));
+const randomTile=()=>Math.floor(Math.random()*9);
+let sequence=[],level=1,best=0,answerIndex=0,phase='idle',runId=0;
+try{best=Math.max(0,Number(localStorage.getItem(BEST_KEY))||0)}catch{}
+for(let i=0;i<9;i++){
+ const tile=document.createElement('button');tile.type='button';tile.className='tile';
+ tile.setAttribute('aria-label',(i+1)+'番のパネル');
+ tile.addEventListener('click',()=>press(i));
+ board.appendChild(tile);tiles.push(tile);
+}
+function speedIndex(){return Math.min(5,Math.floor((level-1)/3))}
+function cleanTiles(){tiles.forEach(t=>t.classList.remove('lit','hit','wrong'))}
+function render(message,detail){
+ $('level').textContent=String(level);
+ $('length').textContent=String(sequence.length||4);
+ $('best').textContent=String(best);
+ $('speed').textContent='⚡ SPEED '+(speedIndex()+1)+' / 6';
+ $('status').textContent=message;
+ $('detail').textContent=detail;
+ $('progress').style.width=(phase==='answer'&&sequence.length?answerIndex/sequence.length*100:phase==='clear'?100:0)+'%';
+ tiles.forEach(t=>{t.disabled=phase!=='answer'});
+}
+function saveBest(){
+ best=Math.max(best,level);
+ try{localStorage.setItem(BEST_KEY,String(best))}catch{}
+}
+async function countdown(id){
+ phase='countdown';$('overlay').hidden=false;
+ render('👀 集中してな！','LEVEL '+level+' / '+sequence.length+'マス');
+ for(const n of ['3','2','1','GO!']){
+  if(id!==runId)return false;
+  $('count').textContent=n;$('count').style.fontSize=n==='GO!'?'70px':'';
+  $('countLabel').textContent=n==='GO!'?'MEMORIZE!':'READY?';
+  await sleep(n==='GO!'?550:750);
+ }
+ if(id!==runId)return false;
+ $('overlay').hidden=true;return true;
+}
+async function play(){
+ const id=++runId;answerIndex=0;cleanTiles();$('action').hidden=true;
+ if(!await countdown(id))return;
+ phase='show';render('👀 光る順番を覚えよう！','出題中…');
+ for(let i=0;i<sequence.length;i++){
+  if(id!==runId)return;
+  const tile=tiles[sequence[i]];tile.classList.add('lit');
+  $('detail').textContent='出題中 '+(i+1)+' / '+sequence.length;
+  await sleep(onTimes[speedIndex()]);
+  if(id!==runId)return;
+  tile.classList.remove('lit');await sleep(gapTimes[speedIndex()]);
+ }
+ if(id!==runId)return;
+ phase='answer';render('👉 覚えた順にタップ！','0 / '+sequence.length+' 正解');
+}
+function press(i){
+ if(phase!=='answer')return;
+ const id=runId,tile=tiles[i];
+ if(sequence[answerIndex]!==i){
+  phase='failed';tile.classList.add('wrong');
+  $('action').hidden=false;$('action').textContent='↻ もう一度挑戦';
+  render('❌ ゲームオーバー','LEVEL '+level+' / '+answerIndex+'マスまで正解');return;
+ }
+ tile.classList.add('hit');
+ setTimeout(()=>{if(id===runId)tile.classList.remove('hit')},170);
+ answerIndex++;
+ if(answerIndex<sequence.length){
+  render('👉 覚えた順にタップ！',answerIndex+' / '+sequence.length+' 正解');return;
+ }
+ saveBest();phase='clear';
+ const speedUp=level%3===0 && speedIndex()<5;
+ render(speedUp?'⚡ SPEED UP！':'🎉 パーフェクト！',
+  speedUp?'次のレベルから点灯が速くなるで！':'次は'+(sequence.length+1)+'マス！');
+ (async()=>{
+  await sleep(speedUp?1600:1050);
+  if(id!==runId||phase!=='clear')return;
+  level++;sequence.push(randomTile());play();
+ })();
+}
+$('action').addEventListener('click',()=>{
+ runId++;level=1;answerIndex=0;sequence=Array.from({length:4},randomTile);play();
+});
+render('準備はOK？','最初は4マスからスタート！');
+})();
+</script></body></html>
