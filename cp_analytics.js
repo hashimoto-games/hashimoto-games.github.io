@@ -11,6 +11,7 @@
     'index.html': 'home', 'cp_drop.html':'drop', 'cp_chain.html':'chain',
     'cp_fruits.html':'fruits','cp_picture_puzzle.html':'picture_puzzle',
     'cp_picture_drop.html':'picture_drop','cp_nokoribi.html':'nokoribi',
+    'cp_memory9.html':'memory9',
     'cp_kanji_eight.html':'kanji_eight','cp_yomichare.html':'yomichare',
     'about.html':'about','credits.html':'credits'
   };
