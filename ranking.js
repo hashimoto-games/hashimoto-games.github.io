@@ -155,8 +155,8 @@
  for(const [game,label] of Object.entries(IDS)){
   if(location.pathname.endsWith('/cp_'+game+'.html')){
    const b=document.createElement('button');b.type='button';b.className='cp-rank-open';b.textContent='🏆 ランキング';b.onclick=()=>show(game);
-   if(game==='nokoribi'){
-    const anchor=document.getElementById('nokoribiRankAnchor');
+   if(game==='nokoribi'||game==='memory9'){
+    const anchor=document.getElementById(game==='memory9'?'memory9RankAnchor':'nokoribiRankAnchor');
     if(anchor){b.classList.add('cp-rank-inline');anchor.append(b)}
     else document.body.append(b);
    }else document.body.append(b);
