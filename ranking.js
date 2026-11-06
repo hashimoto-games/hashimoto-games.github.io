@@ -1,7 +1,7 @@
 /* はしmoto Games leaderboard v0.4: 30-question Yomichare ranking and retained historical scores. */
 (()=>{
  const API='https://zotajucfdvmyernfwxnm.supabase.co/functions/v1/arcade-ranking';
- const IDS={drop:'CP DROP',chain:'CP CHAIN',fruits:'CP FRUITS',nokoribi:'CP NOKORIBI',
+ const IDS={drop:'CP DROP',chain:'CP CHAIN',fruits:'CP FRUITS',nokoribi:'CP NOKORIBI',memory9:'CP MEMORY 9',
   yomi100_1:'よみチャレ！ LEVEL 1',yomi100_2:'よみチャレ！ LEVEL 2',
   yomi100_3:'よみチャレ！ LEVEL 3',yomi100_4:'よみチャレ！ LEVEL 4',
   yomi100_5:'よみチャレ！ LEVEL 5',yomi100_6:'よみチャレ！ LEVEL 6',
@@ -18,6 +18,7 @@
   return min+':'+sec+'.'+(t%10);
  };
  const formatScore=(game,score)=>{
+  if(game==='memory9')return 'LEVEL '+Number(score).toLocaleString('ja-JP')+' クリア';
   if(!isYomi(game))return Number(score).toLocaleString('ja-JP')+' pt';
   // Encoded as completed*100000 + 99999 - elapsed tenths.
   const n=Math.floor(score/100000),tenths=99999-(score%100000);
