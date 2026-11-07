@@ -13,6 +13,7 @@
     'cp_picture_drop.html':'picture_drop','cp_nokoribi.html':'nokoribi',
     'cp_memory9.html':'memory9',
     'cp_kanji_eight.html':'kanji_eight','cp_yomichare.html':'yomichare',
+    'cp_number_logic.html':'number_logic',
     'about.html':'about','credits.html':'credits'
   };
   const prefix = '/';
