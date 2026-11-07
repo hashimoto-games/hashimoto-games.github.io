@@ -132,7 +132,8 @@ function load(){
 }
 function timeText(sec){return String(Math.floor(sec/60)).padStart(2,'0')+':'+String(sec%60).padStart(2,'0')}
 function stat(){
- $('start').hidden=ready;
+ $('start').hidden=false;
+ $('start').textContent=ready?'▶ 新しい問題をスタート':'▶ スタート';
  $('remaining').textContent='残り '+values.filter(v=>!v).length+' マス';
  $('timer').textContent=timeText(seconds);$('best').textContent='BEST '+(bests[currentKey()]!=null?timeText(bests[currentKey()]):'―');
  $('note').textContent='✎ メモ '+(modeNote?'ON':'OFF');$('note').classList.toggle('on',modeNote);
