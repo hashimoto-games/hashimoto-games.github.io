@@ -16,7 +16,7 @@ h1{text-align:center;margin:12px 0 4px;font-size:clamp(26px,7.2vw,38px);letter-s
 .options{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}.opts{display:flex;gap:5px;border:1px solid #345371;border-radius:12px;padding:4px;background:#15263e;min-width:0}
 .opts button{min-width:0;flex:1;padding:10px 5px;border:0;border-radius:9px;color:#bdd2e2;background:transparent;font-size:13px;font-weight:900}.opts button.active{color:#163545;background:#a7eee1}
 .row{display:flex;align-items:center;justify-content:space-between;gap:9px;margin-bottom:10px}.pill{font-size:12px;padding:7px 11px;border:1px solid #385371;background:#152740;border-radius:10px;color:#c6e5ef;font-weight:800}.timer{font-variant-numeric:tabular-nums;font-size:16px;color:#ffda9d;font-weight:900}
-.start{display:block;width:100%;min-height:49px;border:0;border-radius:12px;margin:0 0 12px;color:#123442;background:linear-gradient(110deg,#a6f4df,#8ac9ef);font-size:15px;font-weight:950}.start[hidden]{display:none}.board.locked{position:relative}.board.locked::after{content:'▶ スタートを押してゲーム開始';position:absolute;inset:0;background:#091b30e8;color:#ffdea3;display:grid;place-items:center;text-align:center;padding:18px;font-size:clamp(15px,4vw,21px);font-weight:900;pointer-events:none}.note{font-size:11px;color:#aac3d5;min-height:20px;text-align:center;margin:8px 0 10px}
+.start{display:block;width:100%;min-height:49px;border:0;border-radius:12px;margin:0 0 12px;color:#123442;background:linear-gradient(110deg,#a6f4df,#8ac9ef);font-size:15px;font-weight:950}.start[hidden]{display:none}.resume{display:block;width:100%;min-height:43px;margin:-4px 0 12px;border-radius:11px;border:1px solid #83caba;background:#193d4f;color:#b8f3e5;font-weight:900}.resume[hidden]{display:none}.bottom button[hidden]{display:none}.board.locked{position:relative}.board.locked::after{content:'▶ スタートを押してゲーム開始';position:absolute;inset:0;background:#091b30e8;color:#ffdea3;display:grid;place-items:center;text-align:center;padding:18px;font-size:clamp(15px,4vw,21px);font-weight:900;pointer-events:none}.note{font-size:11px;color:#aac3d5;min-height:20px;text-align:center;margin:8px 0 10px}
 .board{display:grid;grid-template-columns:repeat(var(--size),minmax(0,1fr));width:100%;aspect-ratio:1/1;border:3px solid #91bad0;background:#264661;border-radius:4px;overflow:hidden;touch-action:manipulation}
 .cell{position:relative;min-width:0;min-height:0;border:0;border-right:1px solid #637f96;border-bottom:1px solid #637f96;border-radius:0;background:#152b45;color:#eaf5ff;display:grid;place-items:center;font-weight:850;font-size:clamp(16px,5vw,26px);padding:0;user-select:none}
 .board.six .cell{font-size:clamp(24px,7vw,34px)}
@@ -38,7 +38,7 @@ footer{text-align:center;font-size:10px;color:#889fb7;margin:17px}
 <h1>CP <em>NUMBER LOGIC</em></h1><p class="sub">数字を埋めて、ひらめきを楽しもう！</p>
 <div class="options"><div class="opts" id="sizes"><button type="button" data-size="6">6 × 6</button><button type="button" data-size="9">9 × 9</button></div>
 <div class="opts" id="difficulties"><button type="button" data-diff="easy">初級</button><button type="button" data-diff="normal">中級</button><button type="button" data-diff="hard">上級</button></div></div>
-<button type="button" class="start" id="start">▶ スタート</button>
+<button type="button" class="start" id="start">▶ スタート</button><button type="button" class="resume" id="resume" hidden>↪ 前回の続きから再開</button>
 <div class="row"><div class="pill" id="remaining">残り ― マス</div><div class="pill timer" id="timer">00:00</div><div class="pill" id="best">BEST ―</div></div>
 <div id="board" class="board" role="group" aria-label="ナンプレ盤面"></div>
 <p class="note" id="status" role="status" aria-live="polite">マスを選んで、数字を入力しよう</p>
@@ -54,7 +54,7 @@ footer{text-align:center;font-size:10px;color:#889fb7;margin:17px}
 const $=id=>document.getElementById(id),SAVE='cp-number-logic-save-v1',BEST='cp-number-logic-bests-v1';
 const settings={easy:{6:12,9:35},normal:{6:17,9:42},hard:{6:22,9:49}};
 let size=6,difficulty='easy',boxR=2,boxC=3,givens=[],solution=[],values=[],notes=[],selected=-1,history=[],hints=3,seconds=0,paused=false,solved=false,modeNote=false,generating=false,tick=0;
-let ready=false,pendingSize=6,pendingDifficulty='easy';
+let ready=false,pendingSize=6,pendingDifficulty='easy',hasResume=false;
 let bests={};try{bests=JSON.parse(localStorage.getItem(BEST)||'{}')||{}}catch{}
 const shuffle=a=>{for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
 const range=n=>Array.from({length:n},(_,i)=>i);
@@ -132,8 +132,10 @@ function load(){
 }
 function timeText(sec){return String(Math.floor(sec/60)).padStart(2,'0')+':'+String(sec%60).padStart(2,'0')}
 function stat(){
- $('start').hidden=false;
- $('start').textContent=ready?'▶ 新しい問題をスタート':'▶ スタート';
+ $('start').hidden=ready;
+ $('start').textContent='▶ スタート';
+ $('resume').hidden=ready||!hasResume||pendingSize!==size||pendingDifficulty!==difficulty;
+ $('new').hidden=!ready;
  $('remaining').textContent='残り '+values.filter(v=>!v).length+' マス';
  $('timer').textContent=timeText(seconds);$('best').textContent='BEST '+(bests[currentKey()]!=null?timeText(bests[currentKey()]):'―');
  $('note').textContent='✎ メモ '+(modeNote?'ON':'OFF');$('note').classList.toggle('on',modeNote);
@@ -217,7 +219,7 @@ function hint(){
 function showModal(title,txt){$('modalTitle').textContent=title;$('modalText').textContent=txt;$('modal').hidden=false}
 function newGame(n=size,d=difficulty){
  if(generating)return;
- generating=true;config(n);difficulty=d;pendingSize=n;pendingDifficulty=d;message('問題を作成中…');$('board').style.opacity='.5';
+ generating=true;hasResume=false;ready=false;config(n);difficulty=d;pendingSize=n;pendingDifficulty=d;message('問題を作成中…');$('board').style.opacity='.5';
  setTimeout(()=>{
   try{
    const x=makePuzzle();solution=x.full;givens=x.puzzle;values=givens.slice();notes=range(size*size).map(()=>[]);
@@ -229,6 +231,10 @@ function newGame(n=size,d=difficulty){
 }
 $('note').addEventListener('click',()=>{modeNote=!modeNote;stat()});
 $('erase').addEventListener('click',erase);$('undo').addEventListener('click',undo);$('hint').addEventListener('click',hint);
+$('resume').addEventListener('click',()=>{
+ if(!hasResume||generating||pendingSize!==size||pendingDifficulty!==difficulty)return;
+ ready=true;hasResume=false;redraw();message('前回の続きから再開したで！');
+});
 $('start').addEventListener('click',()=>{
  if(generating)return;
  if(givens.length&&!solved&&values.some((v,i)=>!givens[i]&&v)&&!confirm('前の問題を終了して、選んだ設定でスタートする？'))return;
@@ -265,8 +271,8 @@ setInterval(()=>{if(ready&&!generating&&!solved&&!document.hidden&&givens.length
 document.addEventListener('visibilitychange',()=>{if(document.hidden)store()});
 window.addEventListener('pagehide',store);
 if(load()){
- ready=true;pendingSize=size;pendingDifficulty=difficulty;
- redraw();message(solved?'🎉 前回の問題はクリア済み！':'前回の続きから再開したで！');
+ ready=false;hasResume=!solved;pendingSize=size;pendingDifficulty=difficulty;
+ redraw();message(solved?'前回はクリア済み！設定を選んでスタートしてな！':'設定を選んでスタート、または前回の続きから再開してな！');
 }else{
  config(6);difficulty='easy';pendingSize=6;pendingDifficulty='easy';
  givens=range(36).map(()=>0);values=givens.slice();notes=range(36).map(()=>[]);
