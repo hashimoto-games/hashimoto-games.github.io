@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="ja"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0c1930">
+<meta name="description" content="CP NUMBER LOGIC デイリーチャレンジ。毎日共通の6×6・9×9ナンプレを解き、タイムランキングに挑戦！">
+<title>CP NUMBER LOGIC デイリーチャレンジ｜はしmoto Games</title>
+<link rel="canonical" href="https://hashimoto-games.github.io/cp_number_logic_daily_v2.html">
+<style>
+:root{color-scheme:dark;font-family:system-ui,-apple-system,"Noto Sans JP",sans-serif}
+*{box-sizing:border-box}html{background:#081529}
+body{margin:0;background:radial-gradient(ellipse 70% 35% at 18% 0%,#284a6f77,transparent),#081529;min-height:100dvh;color:#eff7ff}
+button,input{font:inherit}button{cursor:pointer;-webkit-tap-highlight-color:transparent}button:disabled{opacity:.45;cursor:default}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid #ffe0a0;outline-offset:2px}
+.wrap{max-width:530px;padding:13px 12px 30px;margin:auto}
+.top{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.top a{font-size:12px;color:#a8e9e1;font-weight:900;text-decoration:none}
+h1{text-align:center;font-size:clamp(25px,7vw,34px);line-height:1.2;margin:18px 0 7px}
+h1 em{color:#ffdf9b;font-style:normal}
+.lead{text-align:center;font-size:12px;line-height:1.7;color:#bad0e0;margin:0 0 13px}
+.date{text-align:center;font-size:12px;letter-spacing:1px;color:#a7e4dc;font-weight:900;padding:9px;background:#173047;border:1px solid #3b6473;border-radius:10px;margin-bottom:11px}
+.sizes{display:flex;gap:8px;margin-bottom:11px}.sizes button{flex:1;padding:13px 7px;border:1px solid #416987;border-radius:12px;background:#1a344f;color:#e4f1f8;font-weight:950}
+.sizes button.active{background:#9ee9d9;color:#173b47;border-color:#c9fff1}
+.status{display:flex;gap:8px;justify-content:space-between;align-items:center;margin:9px 0;font-size:12px;font-weight:800}
+.clock{color:#ffdf97;font-size:22px;font-variant-numeric:tabular-nums}.remaining{color:#b7d6e6}
+.actions{display:flex;gap:9px;margin:10px 0}.actions button{flex:1;min-height:46px;border:0;border-radius:12px;font-weight:900;background:linear-gradient(120deg,#a3f6df,#86caed);color:#173944}
+.actions button.secondary{background:#263f5b;color:#d8eaf7;border:1px solid #51728a}
+[hidden]{display:none!important}
+.board{width:100%;aspect-ratio:1;display:grid;grid-template-columns:repeat(var(--n),1fr);border:3px solid #a6bbcd;border-radius:4px;overflow:hidden;position:relative;background:#13283e}
+.cell{border:0;border-right:1px solid #56758b;border-bottom:1px solid #56758b;background:#152c46;color:#e7f5ff;min-width:0;min-height:0;padding:0;display:grid;place-items:center;font-size:clamp(18px,5vw,27px);font-weight:900;touch-action:manipulation}
+.board.six .cell{font-size:clamp(24px,7vw,35px)}
+.cell:nth-child(2n){background:#19314b}.cell.fixed{color:#ffe0a7}.cell.peer{background:#274561}.cell.selected{background:#498ea1}.cell.same{background:#32687c}.cell.bad{color:#ff8795;background:#653047}
+.cell.box-right{border-right:3px solid #a3bed1}.cell.box-bottom{border-bottom:3px solid #a3bed1}
+.cell .marks{display:grid;grid-template-columns:repeat(3,1fr);width:100%;height:100%;place-items:center;font-size:clamp(7px,1.9vw,11px);line-height:1;color:#a7ebdf}
+.board.six .marks{font-size:clamp(10px,3vw,15px)}
+.board.cover:after{content:attr(data-cover);position:absolute;inset:0;background:#071a2deF;display:grid;place-items:center;color:#ffe3aa;text-align:center;white-space:pre-line;font-weight:950;font-size:clamp(17px,5vw,25px);padding:12px;pointer-events:none}
+.notice{text-align:center;font-size:12px;line-height:1.5;min-height:21px;margin:9px 0;color:#b4d6e2}
+.numbers{display:grid;grid-template-columns:repeat(var(--n),minmax(0,1fr));gap:5px;margin:12px 0}
+.numbers button{height:45px;border-radius:10px;border:1px solid #456881;background:#1e3a58;color:#fff;font-size:23px;font-weight:950}
+.tools{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px}.tools button{min-width:0;min-height:43px;border-radius:10px;border:1px solid #4e6e83;background:#203952;color:#e6f3fa;font-size:12px;font-weight:900}
+.numbers button .num{display:block;line-height:1}.numbers button .left{display:block;font-size:10px;font-weight:750;color:#a4c5d7;margin-top:3px;line-height:1}.numbers button.focus{border-color:#ffe09d;background:#3d6781}.numbers button.done{opacity:.5}.cell.focusdigit:not(.selected){box-shadow:inset 0 0 0 3px #ffda89;color:#fff0ca}.cell .marks .focusmark{background:#49798b;color:#ffe8b2;border-radius:2px}.tools button.on{background:#98ebdf;color:#133844}
+.rankhead{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:21px 0 10px}.rankhead strong{font-size:16px}
+.rankhead button{border:1px solid #607b90;border-radius:9px;padding:8px 10px;color:#d6edff;background:#223c56;font-size:12px}
+.ranklist{border:1px solid #36546e;background:#132941;border-radius:13px;padding:6px 11px;margin-bottom:14px;min-height:42px}
+.rankrow{display:flex;justify-content:space-between;align-items:center;gap:9px;padding:9px 0;border-bottom:1px solid #2d4862;font-weight:850;font-size:12px}
+.rankrow:last-child{border:0}.rankrow b{color:#ffdf9f;font-size:13px}
+.hint{margin-top:17px;font-size:11px;color:#a2b9c9;line-height:1.8}
+.dialog-mask{position:fixed;inset:0;background:#061020e9;display:grid;place-items:center;z-index:8;padding:16px}
+.dialog{width:min(100%,400px);border:2px solid #a8e8d7;background:#152c44;border-radius:18px;padding:24px 18px;text-align:center;box-shadow:0 15px 45px #0008}
+.dialog h2{color:#ffdf9a;font-size:25px;margin:0 0 10px}.dialog p{font-size:13px;line-height:1.8;color:#c7dcec}
+.dialog input{width:140px;text-align:center;padding:11px;font-size:22px;font-weight:950;letter-spacing:5px;border:2px solid #b9dcd3;border-radius:10px;color:#16344b;background:white}
+.dialog button{width:100%;border:0;border-radius:10px;background:#9decd9;color:#153942;padding:12px;margin-top:10px;font-weight:950}
+.dialog button.secondary{background:#29455d;color:#e5f4fb}
+@media(max-width:530px){.wrap{padding:9px 8px 20px}h1{font-size:clamp(23px,6.5vw,31px);margin:10px 0 5px}.lead{margin-bottom:8px}.date{padding:6px;margin-bottom:7px}.sizes{margin-bottom:7px}.actions{margin:7px 0}.board{max-height:min(calc(100vw - 16px),54dvh);width:min(100%,54dvh);margin-inline:auto}.board.six{max-height:min(calc(100vw - 16px),58dvh);width:min(100%,58dvh)}.numbers{margin:8px 0}.numbers button{height:48px}.tools{grid-template-columns:repeat(2,minmax(0,1fr))}.tools button{min-height:39px}}
+footer{text-align:center;color:#8fa3b9;font-size:11px;margin-top:21px}
+</style>
+<script src="./cp_analytics.js?v=1" defer></script></head><body>
+<main class="wrap">
+<header class="top"><a href="./cp_number_logic_v7.html">← 通常モードへ戻る</a><a href="./index.html">ゲーム一覧</a></header>
+<h1>🏆 <em>DAILY</em> CHALLENGE</h1>
+<p class="lead">毎日同じ問題に挑戦！6×6・9×9それぞれで<br>速いタイムを目指そう。メモは使えるで！</p>
+<div id="today" class="date">本日のチャレンジ</div>
+<div class="sizes"><button id="size6" type="button" class="active">6 × 6</button><button id="size9" type="button">9 × 9</button></div>
+<div class="actions"><button id="start" type="button">▶ スタート</button><button id="pause" class="secondary" type="button" hidden>⏸ 一時停止</button><button id="again" class="secondary" type="button" hidden>↻ もう一度</button></div>
+<div class="status"><span class="remaining" id="remaining">6×6に挑戦</span><span class="clock" id="clock">00:00.0</span></div>
+<div id="board" class="board cover six" data-cover="▶ スタートを押して挑戦！" aria-label="日替わりナンプレ盤面"></div>
+<div id="notice" class="notice" role="status">挑戦するサイズを選んでな！</div>
+<div id="numbers" class="numbers"></div>
+<div class="tools"><button id="note" type="button">✎ メモ OFF</button><button id="erase" type="button">⌫ 消す</button><button id="undo" type="button">↶ 戻す</button><button id="autoNotes" type="button">✎ 候補を自動入力</button></div>
+<div class="rankhead"><strong id="rankTitle">🏆 今日の6×6 TOP10</strong><button id="rankReload" type="button">更新</button></div>
+<div id="ranking" class="ranklist">読み込み中…</div>
+<p class="hint">毎日0時（日本時間）に問題更新。ヒントなし・何度でも挑戦OK。自己ベストを登録できるで。タイムは端末で計測する方式です。</p>
+<footer>© 2026 はしmoto Games</footer>
+</main>
+<div class="dialog-mask" id="result" hidden><div class="dialog">
+<h2>🎉 クリア！</h2><p id="resultText"></p>
+<p>TOP10に挑戦するなら、英数字3文字の名前を入力してな。</p>
+<input id="initials" maxlength="3" placeholder="AAA" autocomplete="off" aria-label="ランキング登録名">
+<div id="submitStatus" class="notice"></div>
+<button id="submit" type="button">🏆 ランキングに登録</button>
+<button id="close" type="button" class="secondary">今回は登録しない</button>
+</div></div>
+<script>
+(()=>{'use strict';
+const $=id=>document.getElementById(id),API='https://zotajucfdvmyernfwxnm.supabase.co/functions/v1/arcade-sudoku-daily';
+const DAY=()=>new Date(Date.now()+32400000).toISOString().slice(0,10);
+const SEED_DAY=DAY(),MAX=7200000;
+let n=6,br=2,bc=3,solution=[],givens=[],values=[],notes=[],selection=-1,noteMode=false;
+let started=false,paused=false,finished=false,generating=false,history=[],elapsed=0,lastTick=0,day=SEED_DAY,focusDigit=0;
+const playerKey='cp_arcade_player_id_v1',initialsKey='cp_arcade_initials_v1';
+let player;try{player=localStorage.getItem(playerKey)}catch{}
+if(!/^[0-9a-f-]{36}$/i.test(player||'')){
+ player=(typeof crypto.randomUUID==='function'?crypto.randomUUID():[1e7,1e3,4e3,8e3,1e11].join('-').replace(/[018]/g,c=>(c^crypto.getRandomValues(new Uint8Array(1))[0]&15>>c/4).toString(16)));
+ try{localStorage.setItem(playerKey,player)}catch{}
+}
+const range=k=>Array.from({length:k},(_,i)=>i);
+function rng(seed){let s=seed>>>0;return()=>{s=(Math.imul(s,1664525)+1013904223)>>>0;return s/4294967296}}
+function seedOf(text){let h=2166136261;for(const c of text){h=Math.imul(h^c.charCodeAt(0),16777619)}return h>>>0}
+function shuffle(a,random){for(let i=a.length-1;i>0;i--){const j=Math.floor(random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function config(k){n=k;br=n===6?2:3;bc=3}
+function makeFull(random){
+ const bands=shuffle(range(n/br),random),stacks=shuffle(range(n/bc),random);
+ const rows=bands.flatMap(b=>shuffle(range(br),random).map(i=>b*br+i));
+ const cols=stacks.flatMap(b=>shuffle(range(bc),random).map(i=>b*bc+i));
+ const digits=shuffle(range(n).map(i=>i+1),random);
+ return rows.flatMap(r=>cols.map(c=>digits[(r*bc+Math.floor(r/br)+c)%n]));
+}
+function count(board,cap=2){
+ let tally=0;const row=range(n).map(()=>0),col=range(n).map(()=>0),block=range(n).map(()=>0),all=(1<<n)-1;
+ const bi=(r,c)=>Math.floor(r/br)*(n/bc)+Math.floor(c/bc);
+ for(let i=0;i<board.length;i++)if(board[i]){
+  let r=Math.floor(i/n),c=i%n,b=bi(r,c),bit=1<<(board[i]-1);
+  if((row[r]|col[c]|block[b])&bit)return 0;
+  row[r]|=bit;col[c]|=bit;block[b]|=bit;
+ }
+ function solve(){
+  let best=-1,mask=0,least=n+1;
+  for(let i=0;i<board.length;i++)if(!board[i]){
+   const r=Math.floor(i/n),c=i%n,m=all&~(row[r]|col[c]|block[bi(r,c)]),bits=m.toString(2).replaceAll('0','').length;
+   if(!bits)return;
+   if(bits<least){least=bits;best=i;mask=m;if(bits===1)break}
+  }
+  if(best<0){tally++;return}
+  const r=Math.floor(best/n),c=best%n,b=bi(r,c);
+  for(let m=mask;m&&tally<cap;m&=m-1){
+   const bit=m&-m;board[best]=Math.log2(bit)+1;row[r]|=bit;col[c]|=bit;block[b]|=bit;
+   solve();board[best]=0;row[r]^=bit;col[c]^=bit;block[b]^=bit;
+  }
+ }
+ solve();return tally;
+}
+function puzzle(k,date){
+ config(k);
+ const random=rng(seedOf('cp-number-logic-daily|'+date+'|'+k+'|v1'));
+ const full=makeFull(random),p=full.slice(),goal=k===6?17:43;
+ let removed=0;
+ for(const i of shuffle(range(k*k),random)){
+  if(removed>=goal)break;
+  const v=p[i];p[i]=0;if(count(p.slice())!==1)p[i]=v;else removed++;
+ }
+ return {full,p};
+}
+function peers(idx){
+ const r=Math.floor(idx/n),c=idx%n,rs=Math.floor(r/br)*br,cs=Math.floor(c/bc)*bc,out=new Set();
+ for(let z=0;z<n;z++){out.add(r*n+z);out.add(z*n+c)}
+ for(let y=rs;y<rs+br;y++)for(let x=cs;x<cs+bc;x++)out.add(y*n+x);
+ out.delete(idx);return [...out];
+}
+function fmt(t){let v=Math.floor(t/100),min=String(Math.floor(v/600)).padStart(2,'0'),sec=String(Math.floor(v%600/10)).padStart(2,'0');return min+':'+sec+'.'+v%10}
+function savedKey(){return 'cp-number-logic-daily-save-v1-'+n}
+function save(){
+ if(!started||finished||generating)return;
+ try{localStorage.setItem(savedKey(),JSON.stringify({day,n,values,notes,elapsed,started,selection,history:history.slice(-80)}))}catch{}
+}
+function load(k){
+ try{
+ const obj=JSON.parse(localStorage.getItem('cp-number-logic-daily-save-v1-'+k)||'null');
+ if(!obj||obj.day!==DAY()||obj.n!==k||!Array.isArray(obj.values)||obj.values.length!==k*k||
+ !Array.isArray(obj.notes)||obj.notes.length!==k*k||!Number.isFinite(obj.elapsed)||obj.elapsed<0||obj.elapsed>MAX)return false;
+ values=obj.values;notes=obj.notes;elapsed=obj.elapsed;selection=obj.selection??-1;history=Array.isArray(obj.history)?obj.history.slice(-80):[];
+ return true;
+ }catch{return false}
+}
+function legalCandidates(i){
+ if(givens[i]||values[i])return [];
+ const used=new Set(peers(i).map(j=>values[j]).filter(Boolean));
+ return range(n).map(z=>z+1).filter(z=>!used.has(z));
+}
+function cleanupNotes(){
+ for(let i=0;i<notes.length;i++)if(!givens[i]&&!values[i]){
+  const allowed=new Set(legalCandidates(i));notes[i]=notes[i].filter(z=>allowed.has(z));
+ }
+}
+function autoNotes(){
+ if(!started||paused||finished)return;
+ snapshot();
+ for(let i=0;i<notes.length;i++)if(!givens[i]&&!values[i])notes[i]=legalCandidates(i);
+ noteMode=true;display();numberPad();save();status('✎ 候補数字をメモしたで！');
+}
+function status(t){$('notice').textContent=t}
+function display(){
+ const board=$('board');board.style.setProperty('--n',n);board.classList.toggle('six',n===6);
+ board.classList.toggle('cover',!started||paused||finished);
+ board.dataset.cover=paused?'⏸ 一時停止中':finished?'🎉 クリア！':'▶ スタートを押して挑戦！';
+ board.replaceChildren();
+ let sr=selection<0?-1:Math.floor(selection/n),sc=selection%n;
+ for(let i=0;i<n*n;i++){
+  const r=Math.floor(i/n),c=i%n,cell=document.createElement('button');
+  cell.type='button';cell.className='cell';cell.setAttribute('aria-label',(r+1)+'行'+(c+1)+'列');
+  if((c+1)%bc===0&&c!==n-1)cell.classList.add('box-right');
+  if((r+1)%br===0&&r!==n-1)cell.classList.add('box-bottom');
+  if(givens[i])cell.classList.add('fixed');
+  if(i===selection)cell.classList.add('selected');
+  else if(sr>=0&&(r===sr||c===sc||(Math.floor(r/br)===Math.floor(sr/br)&&Math.floor(c/bc)===Math.floor(sc/bc))))cell.classList.add('peer');
+  if(values[i]&&!givens[i]&&peers(i).some(j=>values[j]===values[i]))cell.classList.add('bad');
+  if(focusDigit&&values[i]===focusDigit)cell.classList.add('focusdigit');
+  if(values[i])cell.textContent=String(values[i]);
+  else if(notes[i]?.length){
+   const marks=document.createElement('span');marks.className='marks';
+   for(let z=1;z<=n;z++){const t=document.createElement('span');t.textContent=notes[i].includes(z)?String(z):'';if(notes[i].includes(z)&&focusDigit===z)t.classList.add('focusmark');marks.append(t)}cell.append(marks);
+  }
+  cell.addEventListener('click',()=>{if(!started||paused||finished)return;selection=i;focusDigit=values[i]||0;display();numberPad()});
+  board.append(cell);
+ }
+ $('remaining').textContent=started?'残り '+values.filter(v=>!v).length+' マス':n+'×'+n+'に挑戦';
+ $('clock').textContent=fmt(elapsed);
+ $('start').hidden=started;$('pause').hidden=!started||finished;$('again').hidden=!started;
+ $('pause').textContent=paused?'▶ 再開':'⏸ 一時停止';
+ $('autoNotes').disabled=!started||paused||finished;
+ $('note').classList.toggle('on',noteMode);$('note').textContent='✎ メモ '+(noteMode?'ON':'OFF');
+ $('size6').classList.toggle('active',n===6);$('size9').classList.toggle('active',n===9);
+ $('rankTitle').textContent='🏆 今日の'+n+'×'+n+' TOP10';
+}
+function numberPad(){
+ const box=$('numbers');box.replaceChildren();box.style.setProperty('--n',n);
+ for(let z=1;z<=n;z++){
+  const b=document.createElement('button');b.type='button';
+  const t=document.createElement('span');t.className='num';t.textContent=String(z);
+  const c=document.createElement('span');c.className='left';const left=Math.max(0,n-values.filter(v=>v===z).length);c.textContent='残り'+left;
+  b.classList.toggle('focus',focusDigit===z);b.classList.toggle('done',left===0);
+  b.append(t,c);b.addEventListener('click',()=>{focusDigit=z;put(z);display();numberPad()});box.append(b)
+ }
+}
+function snapshot(){history.push({values:values.slice(),notes:notes.map(a=>a.slice())});if(history.length>80)history.shift()}
+function put(z){
+ if(!started||paused||finished||selection<0||givens[selection])return;
+ snapshot();
+ if(noteMode){let a=notes[selection],i=a.indexOf(z);if(i>=0)a.splice(i,1);else a.push(z)}
+ else{values[selection]=z;notes[selection]=[];for(const j of peers(selection)){let i=notes[j].indexOf(z);if(i>=0)notes[j].splice(i,1)}}
+ if(!noteMode)cleanupNotes();display();numberPad();save();if(!noteMode&&values.every((v,i)=>v===solution[i]))win();
+}
+function refreshTime(){if(started&&!paused&&!finished&&!document.hidden){const now=performance.now();elapsed+=Math.max(0,now-lastTick);lastTick=now;$('clock').textContent=fmt(elapsed);if(elapsed>MAX){paused=true;status('制限時間を超えました。もう一度挑戦してな！');display()}}}
+function win(){
+ refreshTime();finished=true;paused=false;
+ try{localStorage.removeItem(savedKey())}catch{}
+ display();$('resultText').textContent=n+'×'+n+' を '+fmt(elapsed)+' でクリア！';
+ $('submitStatus').textContent='';
+ try{$('initials').value=(localStorage.getItem(initialsKey)||'').slice(0,3)}catch{}
+ $('result').hidden=false;status('🎉 クリア！おめでとう！');
+}
+async function rank(){
+ const target=n;const box=$('ranking');box.textContent='ランキングを読み込み中…';
+ try{
+  const r=await fetch(API+'?size='+target,{cache:'no-store'});
+  if(!r.ok)throw Error('rank_failed');
+  const data=await r.json();if(target!==n)return;
+  box.replaceChildren();if(!data.entries.length){box.textContent='まだ記録がないで。最初の挑戦者になろう！';return}
+  for(const item of data.entries){
+   const row=document.createElement('div');row.className='rankrow';
+   const left=document.createElement('span');left.textContent=String(item.rank).padStart(2,'0')+'  '+item.name;
+   const right=document.createElement('b');right.textContent=fmt(item.elapsed_ms);
+   row.append(left,right);box.append(row);
+  }
+ }catch{box.textContent='ランキングを取得できませんでした。'}
+}
+function switchSize(k){
+ if(generating)return;
+ if(started&&!finished)save();
+ started=false;paused=false;finished=false;config(k);selection=-1;focusDigit=0;elapsed=0;history=[];noteMode=false;day=DAY();
+ const t=puzzle(k,day);solution=t.full;givens=t.p;values=t.p.slice();notes=range(n*n).map(()=>[]);
+ numberPad();display();rank();status('▶ スタートを押して挑戦！');
+}
+function start(){
+ if(generating)return;
+ if(day!==DAY())switchSize(n);
+ const saved=load(n);
+ if(saved){status('今日の途中データから再開したで！')}else{values=givens.slice();notes=range(n*n).map(()=>[]);elapsed=0;history=[];selection=-1}
+ started=true;paused=false;finished=false;noteMode=false;focusDigit=0;lastTick=performance.now();
+ display();save();
+}
+$('size6').addEventListener('click',()=>switchSize(6));$('size9').addEventListener('click',()=>switchSize(9));
+$('start').addEventListener('click',start);
+$('again').addEventListener('click',()=>{if(started&&!finished)save();started=false;paused=false;finished=false;try{localStorage.removeItem(savedKey())}catch{};switchSize(n);status('同じ問題にもう一度挑戦できるで！')});
+$('pause').addEventListener('click',()=>{if(!started||finished)return;if(!paused)refreshTime();paused=!paused;lastTick=performance.now();display();save();status(paused?'⏸ 一時停止中':'▶ 再開！')});
+$('autoNotes').addEventListener('click',autoNotes);
+$('note').addEventListener('click',()=>{if(!started||paused||finished)return;noteMode=!noteMode;display()});
+$('erase').addEventListener('click',()=>{if(!started||paused||finished||selection<0||givens[selection])return;snapshot();values[selection]=0;notes[selection]=[];display();numberPad();save()});
+$('undo').addEventListener('click',()=>{if(!started||paused||finished||!history.length)return;const prev=history.pop();values=prev.values;notes=prev.notes;display();numberPad();save()});
+$('rankReload').addEventListener('click',rank);
+$('initials').addEventListener('input',()=>{$('initials').value=$('initials').value.toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,3)});
+$('submit').addEventListener('click',async()=>{
+ const name=$('initials').value;
+ if(!/^[A-Z0-9]{3}$/.test(name)){ $('submitStatus').textContent='英数字3文字で入力してな';return }
+ if(day!==DAY()){$('submitStatus').textContent='日付が変わりました。今日の問題に挑戦してな';return}
+ const btn=$('submit');btn.disabled=true;$('submitStatus').textContent='登録中…';
+ try{
+  const r=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({size:n,day,player_id:player,initials:name,elapsed_ms:Math.max(1000,Math.round(elapsed))})});
+  if(!r.ok)throw Error('submit_failed');
+  try{localStorage.setItem(initialsKey,name)}catch{}
+  $('result').hidden=true;rank();status('🏆 ランキングに記録を送信したで！');
+ }catch{$('submitStatus').textContent='登録できませんでした。通信状態を確認してな'}
+ finally{btn.disabled=false}
+});
+$('close').addEventListener('click',()=>{$('result').hidden=true;rank()});
+document.addEventListener('visibilitychange',()=>{if(document.hidden)refreshTime();else lastTick=performance.now();save()});
+window.addEventListener('pagehide',()=>{refreshTime();save()});
+setInterval(()=>{if(!document.hidden)refreshTime();if(started&&!finished&&Math.floor(elapsed)%5000<250)save()},250);
+$('today').textContent='📅 '+DAY()+'（日本時間）';
+switchSize(6);
+})();
+</script></body></html>
