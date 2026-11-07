@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="ja"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#101a30">
+<meta name="description" content="CP NUMBER LOGIC｜6×6と9×9の数字パズル。初級・中級・上級、メモ機能、ヒント、途中保存つき。無料ナンプレをスマホで遊ぼう。">
+<meta property="og:title" content="CP NUMBER LOGIC｜はしmoto Games"><meta property="og:description" content="6×6も9×9も！じっくり楽しむ数字パズル">
+<link rel="canonical" href="https://hashimoto-games.github.io/cp_number_logic_v5.html">
+<title>CP NUMBER LOGIC｜スタート操作改良版｜はしmoto Games</title>
+<style>
+:root{color-scheme:dark;font-family:system-ui,-apple-system,"Noto Sans JP",sans-serif;--ink:#f3f8ff;--muted:#a9bfd3;--line:#375675;--accent:#88e3d4}
+*{box-sizing:border-box}html{background:#0a1327}body{margin:0;min-height:100dvh;color:var(--ink);background:radial-gradient(ellipse at 12% 0%,#294d6b66,transparent 50%),radial-gradient(ellipse at 100% 85%,#5a426b39,transparent 50%),#0a1327}
+button,select{font:inherit}button{cursor:pointer;-webkit-tap-highlight-color:transparent}button:disabled{opacity:.4;cursor:default}button:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid #ffe5a1;outline-offset:2px}
+.wrap{width:min(100%,540px);margin:auto;padding:13px 12px max(26px,env(safe-area-inset-bottom,20px))}
+.top{display:flex;align-items:center;justify-content:space-between;gap:8px}.top a{color:#a4e9dd;text-decoration:none;font-weight:800;font-size:12px}.brand{font-size:11px;color:#a2bacd;font-weight:800}
+h1{text-align:center;margin:12px 0 4px;font-size:clamp(26px,7.2vw,38px);letter-spacing:.045em;font-weight:1000}h1 em{font-style:normal;color:#ffe1a3}.sub{text-align:center;color:var(--muted);font-size:12px;margin:0 0 12px}
+.options{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}.opts{display:flex;gap:5px;border:1px solid #345371;border-radius:12px;padding:4px;background:#15263e;min-width:0}
+.opts button{min-width:0;flex:1;padding:10px 5px;border:0;border-radius:9px;color:#bdd2e2;background:transparent;font-size:13px;font-weight:900}.opts button.active{color:#163545;background:#a7eee1}
+.row{display:flex;align-items:center;justify-content:space-between;gap:9px;margin-bottom:10px}.pill{font-size:12px;padding:7px 11px;border:1px solid #385371;background:#152740;border-radius:10px;color:#c6e5ef;font-weight:800}.timer{font-variant-numeric:tabular-nums;font-size:16px;color:#ffda9d;font-weight:900}
+.start{display:block;width:100%;min-height:49px;border:0;border-radius:12px;margin:0 0 12px;color:#123442;background:linear-gradient(110deg,#a6f4df,#8ac9ef);font-size:15px;font-weight:950}.start[hidden]{display:none}.pause-button{display:block;width:100%;min-height:43px;margin:0 0 10px;border:1px solid #79bed3;border-radius:11px;background:#193b55;color:#d5f6ff;font-size:14px;font-weight:900}.pause-button[hidden]{display:none}.board.paused{position:relative}.board.paused::after{content:'⏸ 一時停止中';position:absolute;inset:0;display:grid;place-items:center;background:#08192df5;color:#ffe1a1;font-size:clamp(18px,5.5vw,27px);font-weight:950;pointer-events:none}.resume{display:block;width:100%;min-height:43px;margin:-4px 0 12px;border-radius:11px;border:1px solid #83caba;background:#193d4f;color:#b8f3e5;font-weight:900}.resume[hidden]{display:none}.bottom button[hidden]{display:none}.board.locked{position:relative}.board.locked::after{content:'▶ スタートを押してゲーム開始';position:absolute;inset:0;background:#091b30e8;color:#ffdea3;display:grid;place-items:center;text-align:center;padding:18px;font-size:clamp(15px,4vw,21px);font-weight:900;pointer-events:none}.note{font-size:11px;color:#aac3d5;min-height:20px;text-align:center;margin:8px 0 10px}
+.board{display:grid;grid-template-columns:repeat(var(--size),minmax(0,1fr));width:100%;aspect-ratio:1/1;border:3px solid #91bad0;background:#264661;border-radius:4px;overflow:hidden;touch-action:manipulation}
+.cell{position:relative;min-width:0;min-height:0;border:0;border-right:1px solid #637f96;border-bottom:1px solid #637f96;border-radius:0;background:#152b45;color:#eaf5ff;display:grid;place-items:center;font-weight:850;font-size:clamp(16px,5vw,26px);padding:0;user-select:none}
+.board.six .cell{font-size:clamp(24px,7vw,34px)}
+.cell:nth-child(even){background:#172f49}.cell.box-right{border-right:3px solid #9abbd1}.cell.box-bottom{border-bottom:3px solid #9abbd1}.cell.peer{background:#25415d}.cell.same{background:#2b5266}.cell.selected{background:#398e9c;color:#fff}.cell.fixed{font-weight:1000;color:#ffdfac}.cell.error{color:#ff8997;background:#58324b}.cell.selected.error{background:#914656}.cell.hint{color:#8af6d9}
+.cell .notes{display:grid;grid-template-columns:repeat(3,1fr);width:100%;height:100%;align-items:center;justify-items:center;font-size:clamp(7px,1.75vw,11px);font-weight:800;color:#cbd9df;line-height:1;pointer-events:none}.board.six .cell .notes{grid-template-columns:repeat(3,1fr);font-size:clamp(10px,3vw,14px)}
+.numbers{display:grid;grid-template-columns:repeat(var(--size),minmax(0,1fr));gap:4px;margin:12px 0}
+.numbers button{border:1px solid #416885;border-radius:9px;background:#1a3a58;color:#f5f8ff;font-weight:950;font-size:clamp(16px,5.5vw,25px);height:46px;padding:0}
+.numbers button:active{background:#3d8393}.tools{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px}.tools button{min-width:0;min-height:46px;border:1px solid #476681;background:#1b304c;border-radius:10px;color:#d6e4f2;font-size:12px;font-weight:850;padding:6px 2px}.tools button.on{background:#72ddc9;color:#173541;border-color:#a5fce9}
+.bottom{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}.bottom button{border:1px solid #58748b;background:#1d344d;color:#dbedfa;font-weight:900;padding:12px;border-radius:11px;font-size:13px}
+.bottom button.primary{border:0;color:#133441;background:linear-gradient(110deg,#a2f5db,#7dc7ef)}
+.help{margin-top:14px;background:#101f34;border:1px solid #354f67;border-radius:13px;padding:12px 14px}.help summary{font-size:12px;font-weight:900;color:#b1e5df;cursor:pointer}.help p{margin:8px 0 0;color:#c7d4e0;font-size:12px;line-height:1.75}
+.confirm-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}.confirm-actions button{width:100%;margin-top:8px}.confirm-actions .cancel{background:#39506b;color:#fff}.modal[hidden]{display:none}.modal{position:fixed;z-index:50;inset:0;background:#061021e6;display:flex;align-items:center;justify-content:center;padding:18px}.dialog{width:min(100%,400px);background:#182b43;border:2px solid #a5dccc;border-radius:16px;padding:23px 17px;text-align:center;box-shadow:0 18px 40px #0008}.dialog h2{font-size:23px;margin:0 0 11px;color:#ffde9f}.dialog p{color:#cfe0ec;font-size:13px;line-height:1.7}.dialog button{width:100%;border:0;background:#9cebd8;color:#173441;border-radius:10px;font-weight:900;padding:13px;margin-top:8px}
+footer{text-align:center;font-size:10px;color:#889fb7;margin:17px}
+@media(max-width:355px){.wrap{padding:10px 6px}.numbers{gap:2px}.numbers button{height:42px}.tools{gap:4px}.tools button{font-size:11px}}
+</style>
+<script src="./cp_analytics.js?v=1" defer></script>
+</head><body><main class="wrap">
+<header class="top"><a href="./index.html">← ゲーム一覧へ</a><span class="brand">はしmoto Games</span></header>
+<h1>CP <em>NUMBER LOGIC</em></h1><p class="sub">数字を埋めて、ひらめきを楽しもう！</p>
+<div class="options"><div class="opts" id="sizes"><button type="button" data-size="6">6 × 6</button><button type="button" data-size="9">9 × 9</button></div>
+<div class="opts" id="difficulties"><button type="button" data-diff="easy">初級</button><button type="button" data-diff="normal">中級</button><button type="button" data-diff="hard">上級</button></div></div>
+<button type="button" class="start" id="start">▶ スタート</button><button type="button" class="resume" id="resume" hidden>↪ 前回の続きから再開</button>
+<div class="row"><div class="pill" id="remaining">残り ― マス</div><div class="pill timer" id="timer">00:00</div><div class="pill" id="best">BEST ―</div></div>
+<button type="button" class="pause-button" id="pause" hidden>⏸ 一時停止</button>
+<div id="board" class="board" role="group" aria-label="ナンプレ盤面"></div>
+<p class="note" id="status" role="status" aria-live="polite">マスを選んで、数字を入力しよう</p>
+<div id="numbers" class="numbers"></div>
+<div class="tools"><button id="note" type="button">✎ メモ OFF</button><button id="erase" type="button">⌫ 消す</button><button id="undo" type="button">↶ 戻す</button><button id="hint" type="button">💡 ヒント (3)</button></div>
+<div class="bottom"><button type="button" id="new">↻ 新しい問題</button><button type="button" id="check" class="primary">✓ 答えを確認</button></div>
+<details class="help"><summary>遊び方・ルール</summary><p>縦の列・横の行、そして太い線で囲まれた各ブロックに、同じ数字が重ならないよう1〜6または1〜9を入れてね。6×6のブロックは2行×3列、9×9は3行×3列。数字を選ぶ前にメモボタンを押すと候補を記録できるで。途中の状態はこの端末に自動保存。問題は解が1通りだけになるようチェックして生成しているよ。</p></details>
+<footer>© 2026 はしmoto Games</footer>
+</main>
+<div class="modal" id="confirmModal" hidden role="dialog" aria-modal="true" aria-labelledby="confirmTitle"><div class="dialog"><h2 id="confirmTitle">新しい問題にする？</h2><p>現在の問題は終了して、最初から始めるで。<br>途中の記録は上書きされるけど大丈夫？</p><div class="confirm-actions"><button id="confirmCancel" class="cancel" type="button">キャンセル</button><button id="confirmYes" type="button">新しい問題</button></div></div></div>
+<div class="modal" id="modal" hidden role="dialog" aria-modal="true"><div class="dialog"><h2 id="modalTitle">クリア！</h2><p id="modalText"></p><button id="modalClose" type="button">続ける</button></div></div>
+<script>
+(()=>{'use strict';
+const $=id=>document.getElementById(id),SAVE='cp-number-logic-save-v1',BEST='cp-number-logic-bests-v1';
+const settings={easy:{6:12,9:35},normal:{6:17,9:42},hard:{6:22,9:49}};
+let size=6,difficulty='easy',boxR=2,boxC=3,givens=[],solution=[],values=[],notes=[],selected=-1,history=[],hints=3,seconds=0,paused=false,solved=false,modeNote=false,generating=false,tick=0;
+let ready=false,pendingSize=6,pendingDifficulty='easy',hasResume=false,confirmOpen=false,pendingNewAction=null;
+let bests={};try{bests=JSON.parse(localStorage.getItem(BEST)||'{}')||{}}catch{}
+const shuffle=a=>{for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const range=n=>Array.from({length:n},(_,i)=>i);
+function config(n){size=n;boxR=n===6?2:3;boxC=3}
+function peers(index){
+ const r=Math.floor(index/size),c=index%size,rs=Math.floor(r/boxR)*boxR,cs=Math.floor(c/boxC)*boxC;
+ const a=new Set();for(let k=0;k<size;k++){a.add(r*size+k);a.add(k*size+c)}
+ for(let y=rs;y<rs+boxR;y++)for(let x=cs;x<cs+boxC;x++)a.add(y*size+x);
+ a.delete(index);return [...a]
+}
+function generatedFull(){
+ const bands=shuffle(range(size/boxR)),stacks=shuffle(range(size/boxC));
+ const rows=bands.flatMap(b=>shuffle(range(boxR)).map(i=>b*boxR+i));
+ const cols=stacks.flatMap(s=>shuffle(range(boxC)).map(i=>s*boxC+i));
+ const digits=shuffle(range(size).map(i=>i+1));
+ return rows.flatMap(r=>cols.map(c=>digits[(r*boxC+Math.floor(r/boxR)+c)%size]));
+}
+function countSolutions(board,limit=2){
+ let count=0;
+ const row=range(size).map(()=>0),col=range(size).map(()=>0),block=range(size).map(()=>0),all=(1<<size)-1;
+ const bi=(r,c)=>Math.floor(r/boxR)*(size/boxC)+Math.floor(c/boxC);
+ for(let i=0;i<board.length;i++)if(board[i]){
+  const r=Math.floor(i/size),c=i%size,b=bi(r,c),bit=1<<(board[i]-1);
+  if((row[r]|col[c]|block[b])&bit)return 0;
+  row[r]|=bit;col[c]|=bit;block[b]|=bit;
+ }
+ function walk(){
+  let pos=-1,options=0,min=size+1;
+  for(let i=0;i<board.length;i++)if(!board[i]){
+   const r=Math.floor(i/size),c=i%size,m=all&~(row[r]|col[c]|block[bi(r,c)]);
+   let n=0;for(let x=m;x;x&=x-1)n++;
+   if(n===0)return;
+   if(n<min){min=n;pos=i;options=m;if(n===1)break}
+  }
+  if(pos===-1){count++;return}
+  const r=Math.floor(pos/size),c=pos%size,b=bi(r,c);
+  for(let m=options;m&&count<limit;m&=m-1){
+   const bit=m&-m,number=Math.log2(bit)+1;
+   board[pos]=number;row[r]|=bit;col[c]|=bit;block[b]|=bit;
+   walk();
+   board[pos]=0;row[r]^=bit;col[c]^=bit;block[b]^=bit;
+  }
+ }
+ walk();return count;
+}
+function makePuzzle(){
+ const full=generatedFull(),puzzle=full.slice(),target=settings[difficulty][size];
+ // Random removal, with unique-solution checking. Difficulty is based on clue count.
+ let removed=0;
+ for(const i of shuffle(range(size*size))){
+  if(removed>=target)break;
+  const old=puzzle[i];puzzle[i]=0;
+  if(countSolutions(puzzle.slice())!==1)puzzle[i]=old;else removed++;
+ }
+ return {full,puzzle};
+}
+function currentKey(){return size+'-'+difficulty}
+function store(){
+ if(generating||!ready)return;
+ try{localStorage.setItem(SAVE,JSON.stringify({size,difficulty,givens,solution,values,notes,hints,seconds,solved,selected,history:history.slice(-70)}))}catch{}
+}
+function load(){
+ try{
+  const obj=JSON.parse(localStorage.getItem(SAVE)||'null');
+  if(!obj||![6,9].includes(obj.size)||!Object.hasOwn(settings,obj.difficulty))return false;
+  const l=obj.size*obj.size;
+  if(!['givens','solution','values','notes'].every(k=>Array.isArray(obj[k])&&obj[k].length===l))return false;
+  if(!['givens','solution','values'].every(k=>obj[k].every(v=>Number.isInteger(v)&&v>=0&&v<=obj.size)))return false;
+  if(obj.notes.some(a=>!Array.isArray(a)||a.some(v=>!Number.isInteger(v)||v<1||v>obj.size)))return false;
+  config(obj.size);difficulty=obj.difficulty;givens=obj.givens;solution=obj.solution;values=obj.values;notes=obj.notes;
+  hints=Math.max(0,Math.min(3,Number(obj.hints)||0));seconds=Math.max(0,Math.floor(Number(obj.seconds)||0));
+  solved=!!obj.solved;selected=Number.isInteger(obj.selected)&&obj.selected>=0&&obj.selected<l?obj.selected:-1;
+  history=Array.isArray(obj.history)?obj.history.slice(-70):[];return true;
+ }catch{return false}
+}
+function timeText(sec){return String(Math.floor(sec/60)).padStart(2,'0')+':'+String(sec%60).padStart(2,'0')}
+function stat(){
+ $('start').hidden=ready;
+ $('start').textContent='▶ スタート';
+ $('resume').hidden=ready||!hasResume||pendingSize!==size||pendingDifficulty!==difficulty;
+ $('new').hidden=!ready;
+ $('pause').hidden=!ready||solved;
+ $('pause').textContent=paused?'▶ 再開':'⏸ 一時停止';
+ $('remaining').textContent='残り '+values.filter(v=>!v).length+' マス';
+ $('timer').textContent=timeText(seconds);$('best').textContent='BEST '+(bests[currentKey()]!=null?timeText(bests[currentKey()]):'―');
+ $('note').textContent='✎ メモ '+(modeNote?'ON':'OFF');$('note').classList.toggle('on',modeNote);
+ $('hint').textContent='💡 ヒント ('+hints+')';$('hint').disabled=solved||generating||hints===0;
+ for(const b of document.querySelectorAll('[data-size]'))b.classList.toggle('active',Number(b.dataset.size)===pendingSize);
+ for(const b of document.querySelectorAll('[data-diff]'))b.classList.toggle('active',b.dataset.diff===pendingDifficulty);
+}
+function conflicts(index){
+ const v=values[index];return v!==0&&peers(index).some(j=>values[j]===v)
+}
+function drawBoard(){
+ const board=$('board');board.style.setProperty('--size',size);board.classList.toggle('six',size===6);board.classList.toggle('locked',!ready);board.classList.toggle('paused',ready&&paused);
+ board.replaceChildren();
+ const rSel=selected<0?-1:Math.floor(selected/size),cSel=selected%size;
+ for(let i=0;i<size*size;i++){
+  const r=Math.floor(i/size),c=i%size,b=document.createElement('button');
+  b.type='button';b.className='cell';b.dataset.index=String(i);
+  if((c+1)%boxC===0&&c!==size-1)b.classList.add('box-right');
+  if((r+1)%boxR===0&&r!==size-1)b.classList.add('box-bottom');
+  if(selected===i)b.classList.add('selected');
+  else if(rSel>=0&&(r===rSel||c===cSel||(Math.floor(r/boxR)===Math.floor(rSel/boxR)&&Math.floor(c/boxC)===Math.floor(cSel/boxC))))b.classList.add('peer');
+  if(selected>=0&&values[selected]&&values[i]===values[selected]&&i!==selected)b.classList.add('same');
+  if(givens[i])b.classList.add('fixed');
+  if(values[i]&&!givens[i]&&conflicts(i))b.classList.add('error');
+  if(values[i]){b.textContent=String(values[i])}
+  else if(notes[i]?.length){
+   const grid=document.createElement('span');grid.className='notes';
+   for(let n=1;n<=size;n++){const t=document.createElement('span');t.textContent=notes[i].includes(n)?String(n):'';grid.append(t)}
+   b.append(grid);
+  }
+  b.setAttribute('aria-label',(r+1)+'行'+(c+1)+'列 '+(values[i]||'空白')+(givens[i]?' 固定':''));
+  b.addEventListener('click',()=>{if(!ready||paused||confirmOpen)return;selected=i;drawBoard();stat()});
+  board.append(b);
+ }
+}
+function drawNumbers(){
+ const parent=$('numbers');parent.style.setProperty('--size',size);parent.replaceChildren();
+ for(let n=1;n<=size;n++){const b=document.createElement('button');b.type='button';b.textContent=String(n);b.addEventListener('click',()=>place(n));parent.append(b)}
+}
+function redraw(){drawBoard();drawNumbers();stat();store()}
+function message(t){$('status').textContent=t}
+function pushHistory(){history.push({values:values.slice(),notes:notes.map(v=>v.slice()),hints});if(history.length>70)history.shift()}
+function completed(){
+ if(values.every((v,i)=>v===solution[i])){
+  solved=true;paused=false;const key=currentKey(),old=bests[key],record=old==null||seconds<old;
+  if(record){bests[key]=seconds;try{localStorage.setItem(BEST,JSON.stringify(bests))}catch{}}
+  message('🎉 クリア！おめでとう！');
+  showModal('🎉 パズルクリア！',size+'×'+size+'・'+({easy:'初級',normal:'中級',hard:'上級'}[difficulty])+' を '+timeText(seconds)+' でクリア！'+(record?' 自己ベスト更新！':''));
+  stat();store();return true;
+ }return false;
+}
+function place(n){
+ if(!ready||paused||confirmOpen||generating||solved||selected<0||givens[selected])return;
+ pushHistory();
+ if(modeNote){
+  const a=notes[selected],idx=a.indexOf(n);if(idx<0)a.push(n);else a.splice(idx,1);a.sort((x,y)=>x-y);
+ }else{
+  values[selected]=n;notes[selected]=[];
+  for(const p of peers(selected)){const at=notes[p]?.indexOf(n)??-1;if(at>=0)notes[p].splice(at,1)}
+ }
+ drawBoard();stat();store();if(!modeNote)completed();
+}
+function erase(){
+ if(!ready||paused||selected<0||givens[selected]||solved)return;
+ pushHistory();values[selected]=0;notes[selected]=[];drawBoard();stat();store()
+}
+function undo(){
+ if(!ready||paused||solved||!history.length)return;
+ const prev=history.pop();if(!prev||!Array.isArray(prev.values)||!Array.isArray(prev.notes))return;
+ values=prev.values;notes=prev.notes;hints=prev.hints;drawBoard();stat();store()
+}
+function hint(){
+ if(!ready||paused||hints===0||solved||generating)return;
+ let i=selected;
+ if(i<0||givens[i]||values[i]===solution[i])i=values.findIndex((v,k)=>!givens[k]&&v!==solution[k]);
+ if(i<0){message('ヒントを使えるマスがありません');return}
+ pushHistory();values[i]=solution[i];notes[i]=[];hints--;selected=i;
+ for(const p of peers(i)){const at=notes[p]?.indexOf(values[i])??-1;if(at>=0)notes[p].splice(at,1)}
+ drawBoard();stat();store();if(!completed())message('💡 '+(Math.floor(i/size)+1)+'行'+(i%size+1)+'列を埋めたで！');
+}
+function showModal(title,txt){$('modalTitle').textContent=title;$('modalText').textContent=txt;$('modal').hidden=false}
+function needsRestartConfirm(){
+ return givens.length>0 && !solved && values.some((v,i)=>!givens[i]&&v);
+}
+function requestNewGame(){
+ if(generating)return;
+ const proceed=()=>newGame(pendingSize,pendingDifficulty);
+ if(!needsRestartConfirm()){proceed();return}
+ confirmOpen=true;pendingNewAction=proceed;
+ $('confirmModal').hidden=false;
+}
+function closeNewConfirm(accepted){
+ const action=accepted?pendingNewAction:null;
+ confirmOpen=false;pendingNewAction=null;
+ $('confirmModal').hidden=true;
+ if(action)action();
+}
+$('confirmCancel').addEventListener('click',()=>closeNewConfirm(false));
+$('confirmYes').addEventListener('click',()=>closeNewConfirm(true));
+$('confirmModal').addEventListener('click',e=>{if(e.target===$('confirmModal'))closeNewConfirm(false)});
+function newGame(n=size,d=difficulty){
+ if(generating)return;
+ generating=true;hasResume=false;ready=false;paused=false;config(n);difficulty=d;pendingSize=n;pendingDifficulty=d;message('問題を作成中…');$('board').style.opacity='.5';
+ setTimeout(()=>{
+  try{
+   const x=makePuzzle();solution=x.full;givens=x.puzzle;values=givens.slice();notes=range(size*size).map(()=>[]);
+   history=[];hints=3;seconds=0;selected=-1;solved=false;modeNote=false;ready=true;
+   message('マスを選んで数字を入力しよう');redraw();
+  }catch(e){message('問題生成に失敗したので、もう一度押してな')}
+  finally{generating=false;$('board').style.opacity='1';redraw();store()}
+ },35);
+}
+$('pause').addEventListener('click',()=>{
+ if(!ready||solved||generating)return;
+ paused=!paused;
+ drawBoard();stat();
+ message(paused?'⏸ 一時停止中。再開を押すと続きから遊べるで！':'▶ 再開！続きをどうぞ');
+ store();
+});
+$('note').addEventListener('click',()=>{if(!ready||paused)return;modeNote=!modeNote;stat()});
+$('erase').addEventListener('click',erase);$('undo').addEventListener('click',undo);$('hint').addEventListener('click',hint);
+$('resume').addEventListener('click',()=>{
+ if(!hasResume||generating||pendingSize!==size||pendingDifficulty!==difficulty)return;
+ ready=true;paused=false;hasResume=false;redraw();message('前回の続きから再開したで！');
+});
+$('start').addEventListener('click',requestNewGame);
+$('new').addEventListener('click',requestNewGame);
+$('check').addEventListener('click',()=>{
+ if(!ready){message('スタートを押してゲームを始めてな！');return}
+ if(paused){message('再開を押してから答えを確認してな！');return}
+ if(solved){message('すでにクリア済みやで！');return}
+ const errors=values.reduce((a,v,i)=>a+(v!==0&&v!==solution[i]?1:0),0);
+ message(errors?'まだ '+errors+' マスに誤りがあるで。':'ここまで入力した数字は正解！');
+ if(errors===0)completed();
+});
+for(const b of document.querySelectorAll('[data-size]'))b.addEventListener('click',()=>{
+ pendingSize=Number(b.dataset.size);ready=false;paused=false;
+ message('サイズと難易度を選んで、スタートを押してな！');drawBoard();stat();
+});
+for(const b of document.querySelectorAll('[data-diff]'))b.addEventListener('click',()=>{
+ pendingDifficulty=b.dataset.diff;ready=false;paused=false;
+ message('サイズと難易度を選んで、スタートを押してな！');drawBoard();stat();
+});
+$('modalClose').addEventListener('click',()=>{$('modal').hidden=true});$('modal').addEventListener('click',e=>{if(e.target===$('modal'))$('modal').hidden=true});
+document.addEventListener('keydown',e=>{
+ if(e.target.closest('button,select,input,textarea'))return;
+ if(/^[1-9]$/.test(e.key)&&Number(e.key)<=size)place(Number(e.key));
+ else if(e.key==='Backspace'||e.key==='Delete')erase();
+ else if(e.key.toLowerCase()==='n'){modeNote=!modeNote;stat()}
+});
+setInterval(()=>{if(ready&&!paused&&!confirmOpen&&!generating&&!solved&&!document.hidden&&givens.length){seconds++;$('timer').textContent=timeText(seconds);if(seconds%5===0)store()}},1000);
+document.addEventListener('visibilitychange',()=>{if(document.hidden)store()});
+window.addEventListener('pagehide',store);
+if(load()){
+ ready=false;paused=false;hasResume=!solved;pendingSize=size;pendingDifficulty=difficulty;
+ redraw();message(solved?'前回はクリア済み！設定を選んでスタートしてな！':'設定を選んでスタート、または前回の続きから再開してな！');
+}else{
+ config(6);difficulty='easy';pendingSize=6;pendingDifficulty='easy';
+ givens=range(36).map(()=>0);values=givens.slice();notes=range(36).map(()=>[]);
+ ready=false;drawBoard();drawNumbers();stat();
+ message('サイズと難易度を選んで、スタートを押してな！');
+}
+})();
+</script></body></html>
