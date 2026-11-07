@@ -49,7 +49,7 @@ footer{text-align:center;font-size:10px;color:#889fb7;margin:17px}
 <details class="help"><summary>遊び方・ルール</summary><p>縦の列・横の行、そして太い線で囲まれた各ブロックに、同じ数字が重ならないよう1〜6または1〜9を入れてね。6×6のブロックは2行×3列、9×9は3行×3列。数字を選ぶ前にメモボタンを押すと候補を記録できるで。途中の状態はこの端末に自動保存。問題は解が1通りだけになるようチェックして生成しているよ。</p></details>
 <footer>© 2026 はしmoto Games</footer>
 </main>
-<div class="modal" id="confirmModal" hidden role="dialog" aria-modal="true" aria-labelledby="confirmTitle"><div class="dialog"><h2 id="confirmTitle">新しい問題にする？</h2><p>現在の問題は終了して、最初から始めるで。<br>途中の記録は上書きされるけど大丈夫？</p><div class="confirm-actions"><button id="confirmCancel" class="cancel" type="button">キャンセル</button><button id="confirmYes" type="button">新しい問題</button></div></div></div>
+<div class="modal" id="confirmModal" hidden role="dialog" aria-modal="true" aria-labelledby="confirmTitle"><div class="dialog"><h2 id="confirmTitle">新しい問題に変更しますか？</h2><p>現在の問題を終了し、サイズ・難易度の選択に戻ります。<br>途中の記録は保存されません。</p><div class="confirm-actions"><button id="confirmCancel" class="cancel" type="button">キャンセル</button><button id="confirmYes" type="button">選択画面へ戻る</button></div></div></div>
 <div class="modal" id="modal" hidden role="dialog" aria-modal="true"><div class="dialog"><h2 id="modalTitle">クリア！</h2><p id="modalText"></p><button id="modalClose" type="button">続ける</button></div></div>
 <script>
 (()=>{'use strict';
@@ -140,8 +140,8 @@ function stat(){
  $('new').hidden=!ready;
  $('pause').hidden=!ready||solved;
  $('pause').textContent=paused?'▶ 再開':'⏸ 一時停止';
- $('remaining').textContent='残り '+values.filter(v=>!v).length+' マス';
- $('timer').textContent=timeText(seconds);$('best').textContent='BEST '+(bests[currentKey()]!=null?timeText(bests[currentKey()]):'―');
+ $('remaining').textContent=ready||hasResume?'残り '+values.filter(v=>!v).length+' マス':'問題を選択';
+ $('timer').textContent=ready||hasResume?timeText(seconds):'00:00';const bestKey=pendingSize+'-'+pendingDifficulty;$('best').textContent='BEST '+(bests[bestKey]!=null?timeText(bests[bestKey]):'―');
  $('note').textContent='✎ メモ '+(modeNote?'ON':'OFF');$('note').classList.toggle('on',modeNote);
  $('hint').textContent='💡 ヒント ('+hints+')';$('hint').disabled=solved||generating||hints===0;
  for(const b of document.querySelectorAll('[data-size]'))b.classList.toggle('active',Number(b.dataset.size)===pendingSize);
@@ -224,9 +224,17 @@ function showModal(title,txt){$('modalTitle').textContent=title;$('modalText').t
 function needsRestartConfirm(){
  return givens.length>0 && !solved && values.some((v,i)=>!givens[i]&&v);
 }
+function backToSelection(){
+ ready=false;paused=false;hasResume=false;solved=false;modeNote=false;selected=-1;seconds=0;hints=3;history=[];
+ config(pendingSize);difficulty=pendingDifficulty;
+ givens=range(size*size).map(()=>0);solution=givens.slice();values=givens.slice();notes=givens.map(()=>[]);
+ try{localStorage.removeItem(SAVE)}catch{}
+ $('modal').hidden=true;drawBoard();drawNumbers();stat();
+ message('サイズと難易度を選んで、スタートを押してな！');
+}
 function requestNewGame(){
  if(generating)return;
- const proceed=()=>newGame(pendingSize,pendingDifficulty);
+ const proceed=()=>backToSelection();
  if(!needsRestartConfirm()){proceed();return}
  confirmOpen=true;pendingNewAction=proceed;
  $('confirmModal').hidden=false;
@@ -265,7 +273,13 @@ $('resume').addEventListener('click',()=>{
  if(!hasResume||generating||pendingSize!==size||pendingDifficulty!==difficulty)return;
  ready=true;paused=false;hasResume=false;redraw();message('前回の続きから再開したで！');
 });
-$('start').addEventListener('click',requestNewGame);
+$('start').addEventListener('click',()=>{
+ if(generating)return;
+ if(needsRestartConfirm()){
+  confirmOpen=true;pendingNewAction=()=>newGame(pendingSize,pendingDifficulty);
+  $('confirmModal').hidden=false;
+ }else newGame(pendingSize,pendingDifficulty);
+});
 $('new').addEventListener('click',requestNewGame);
 $('check').addEventListener('click',()=>{
  if(!ready){message('スタートを押してゲームを始めてな！');return}
@@ -276,11 +290,13 @@ $('check').addEventListener('click',()=>{
  if(errors===0)completed();
 });
 for(const b of document.querySelectorAll('[data-size]'))b.addEventListener('click',()=>{
- pendingSize=Number(b.dataset.size);ready=false;paused=false;
+ pendingSize=Number(b.dataset.size);
+ if(ready){ready=false;paused=false;hasResume=!solved;}
  message('サイズと難易度を選んで、スタートを押してな！');drawBoard();stat();
 });
 for(const b of document.querySelectorAll('[data-diff]'))b.addEventListener('click',()=>{
- pendingDifficulty=b.dataset.diff;ready=false;paused=false;
+ pendingDifficulty=b.dataset.diff;
+ if(ready){ready=false;paused=false;hasResume=!solved;}
  message('サイズと難易度を選んで、スタートを押してな！');drawBoard();stat();
 });
 $('modalClose').addEventListener('click',()=>{$('modal').hidden=true});$('modal').addEventListener('click',e=>{if(e.target===$('modal'))$('modal').hidden=true});
