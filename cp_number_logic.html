@@ -16,7 +16,7 @@ h1{text-align:center;margin:12px 0 4px;font-size:clamp(26px,7.2vw,38px);letter-s
 .options{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}.opts{display:flex;gap:5px;border:1px solid #345371;border-radius:12px;padding:4px;background:#15263e;min-width:0}
 .opts button{min-width:0;flex:1;padding:10px 5px;border:0;border-radius:9px;color:#bdd2e2;background:transparent;font-size:13px;font-weight:900}.opts button.active{color:#163545;background:#a7eee1}
 .row{display:flex;align-items:center;justify-content:space-between;gap:9px;margin-bottom:10px}.pill{font-size:12px;padding:7px 11px;border:1px solid #385371;background:#152740;border-radius:10px;color:#c6e5ef;font-weight:800}.timer{font-variant-numeric:tabular-nums;font-size:16px;color:#ffda9d;font-weight:900}
-.note{font-size:11px;color:#aac3d5;min-height:20px;text-align:center;margin:8px 0 10px}
+.start{display:block;width:100%;min-height:49px;border:0;border-radius:12px;margin:0 0 12px;color:#123442;background:linear-gradient(110deg,#a6f4df,#8ac9ef);font-size:15px;font-weight:950}.start[hidden]{display:none}.board.locked{position:relative}.board.locked::after{content:'▶ スタートを押してゲーム開始';position:absolute;inset:0;background:#091b30e8;color:#ffdea3;display:grid;place-items:center;text-align:center;padding:18px;font-size:clamp(15px,4vw,21px);font-weight:900;pointer-events:none}.note{font-size:11px;color:#aac3d5;min-height:20px;text-align:center;margin:8px 0 10px}
 .board{display:grid;grid-template-columns:repeat(var(--size),minmax(0,1fr));width:100%;aspect-ratio:1/1;border:3px solid #91bad0;background:#264661;border-radius:4px;overflow:hidden;touch-action:manipulation}
 .cell{position:relative;min-width:0;min-height:0;border:0;border-right:1px solid #637f96;border-bottom:1px solid #637f96;border-radius:0;background:#152b45;color:#eaf5ff;display:grid;place-items:center;font-weight:850;font-size:clamp(16px,5vw,26px);padding:0;user-select:none}
 .board.six .cell{font-size:clamp(24px,7vw,34px)}
@@ -38,6 +38,7 @@ footer{text-align:center;font-size:10px;color:#889fb7;margin:17px}
 <h1>CP <em>NUMBER LOGIC</em></h1><p class="sub">数字を埋めて、ひらめきを楽しもう！</p>
 <div class="options"><div class="opts" id="sizes"><button type="button" data-size="6">6 × 6</button><button type="button" data-size="9">9 × 9</button></div>
 <div class="opts" id="difficulties"><button type="button" data-diff="easy">初級</button><button type="button" data-diff="normal">中級</button><button type="button" data-diff="hard">上級</button></div></div>
+<button type="button" class="start" id="start">▶ スタート</button>
 <div class="row"><div class="pill" id="remaining">残り ― マス</div><div class="pill timer" id="timer">00:00</div><div class="pill" id="best">BEST ―</div></div>
 <div id="board" class="board" role="group" aria-label="ナンプレ盤面"></div>
 <p class="note" id="status" role="status" aria-live="polite">マスを選んで、数字を入力しよう</p>
@@ -53,6 +54,7 @@ footer{text-align:center;font-size:10px;color:#889fb7;margin:17px}
 const $=id=>document.getElementById(id),SAVE='cp-number-logic-save-v1',BEST='cp-number-logic-bests-v1';
 const settings={easy:{6:12,9:35},normal:{6:17,9:42},hard:{6:22,9:49}};
 let size=6,difficulty='easy',boxR=2,boxC=3,givens=[],solution=[],values=[],notes=[],selected=-1,history=[],hints=3,seconds=0,paused=false,solved=false,modeNote=false,generating=false,tick=0;
+let ready=false,pendingSize=6,pendingDifficulty='easy';
 let bests={};try{bests=JSON.parse(localStorage.getItem(BEST)||'{}')||{}}catch{}
 const shuffle=a=>{for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
 const range=n=>Array.from({length:n},(_,i)=>i);
@@ -111,7 +113,7 @@ function makePuzzle(){
 }
 function currentKey(){return size+'-'+difficulty}
 function store(){
- if(generating)return;
+ if(generating||!ready)return;
  try{localStorage.setItem(SAVE,JSON.stringify({size,difficulty,givens,solution,values,notes,hints,seconds,solved,selected,history:history.slice(-70)}))}catch{}
 }
 function load(){
@@ -130,18 +132,19 @@ function load(){
 }
 function timeText(sec){return String(Math.floor(sec/60)).padStart(2,'0')+':'+String(sec%60).padStart(2,'0')}
 function stat(){
+ $('start').hidden=ready;
  $('remaining').textContent='残り '+values.filter(v=>!v).length+' マス';
  $('timer').textContent=timeText(seconds);$('best').textContent='BEST '+(bests[currentKey()]!=null?timeText(bests[currentKey()]):'―');
  $('note').textContent='✎ メモ '+(modeNote?'ON':'OFF');$('note').classList.toggle('on',modeNote);
  $('hint').textContent='💡 ヒント ('+hints+')';$('hint').disabled=solved||generating||hints===0;
- for(const b of document.querySelectorAll('[data-size]'))b.classList.toggle('active',Number(b.dataset.size)===size);
- for(const b of document.querySelectorAll('[data-diff]'))b.classList.toggle('active',b.dataset.diff===difficulty);
+ for(const b of document.querySelectorAll('[data-size]'))b.classList.toggle('active',Number(b.dataset.size)===pendingSize);
+ for(const b of document.querySelectorAll('[data-diff]'))b.classList.toggle('active',b.dataset.diff===pendingDifficulty);
 }
 function conflicts(index){
  const v=values[index];return v!==0&&peers(index).some(j=>values[j]===v)
 }
 function drawBoard(){
- const board=$('board');board.style.setProperty('--size',size);board.classList.toggle('six',size===6);
+ const board=$('board');board.style.setProperty('--size',size);board.classList.toggle('six',size===6);board.classList.toggle('locked',!ready);
  board.replaceChildren();
  const rSel=selected<0?-1:Math.floor(selected/size),cSel=selected%size;
  for(let i=0;i<size*size;i++){
@@ -161,7 +164,7 @@ function drawBoard(){
    b.append(grid);
   }
   b.setAttribute('aria-label',(r+1)+'行'+(c+1)+'列 '+(values[i]||'空白')+(givens[i]?' 固定':''));
-  b.addEventListener('click',()=>{selected=i;drawBoard();stat()});
+  b.addEventListener('click',()=>{if(!ready)return;selected=i;drawBoard();stat()});
   board.append(b);
  }
 }
@@ -182,7 +185,7 @@ function completed(){
  }return false;
 }
 function place(n){
- if(generating||solved||selected<0||givens[selected])return;
+ if(!ready||generating||solved||selected<0||givens[selected])return;
  pushHistory();
  if(modeNote){
   const a=notes[selected],idx=a.indexOf(n);if(idx<0)a.push(n);else a.splice(idx,1);a.sort((x,y)=>x-y);
@@ -193,16 +196,16 @@ function place(n){
  drawBoard();stat();store();if(!modeNote)completed();
 }
 function erase(){
- if(selected<0||givens[selected]||solved)return;
+ if(!ready||selected<0||givens[selected]||solved)return;
  pushHistory();values[selected]=0;notes[selected]=[];drawBoard();stat();store()
 }
 function undo(){
- if(solved||!history.length)return;
+ if(!ready||solved||!history.length)return;
  const prev=history.pop();if(!prev||!Array.isArray(prev.values)||!Array.isArray(prev.notes))return;
  values=prev.values;notes=prev.notes;hints=prev.hints;drawBoard();stat();store()
 }
 function hint(){
- if(hints===0||solved||generating)return;
+ if(!ready||hints===0||solved||generating)return;
  let i=selected;
  if(i<0||givens[i]||values[i]===solution[i])i=values.findIndex((v,k)=>!givens[k]&&v!==solution[k]);
  if(i<0){message('ヒントを使えるマスがありません');return}
@@ -213,27 +216,43 @@ function hint(){
 function showModal(title,txt){$('modalTitle').textContent=title;$('modalText').textContent=txt;$('modal').hidden=false}
 function newGame(n=size,d=difficulty){
  if(generating)return;
- generating=true;config(n);difficulty=d;message('問題を作成中…');$('board').style.opacity='.5';
+ generating=true;config(n);difficulty=d;pendingSize=n;pendingDifficulty=d;message('問題を作成中…');$('board').style.opacity='.5';
  setTimeout(()=>{
   try{
    const x=makePuzzle();solution=x.full;givens=x.puzzle;values=givens.slice();notes=range(size*size).map(()=>[]);
-   history=[];hints=3;seconds=0;selected=-1;solved=false;modeNote=false;
+   history=[];hints=3;seconds=0;selected=-1;solved=false;modeNote=false;ready=true;
    message('マスを選んで数字を入力しよう');redraw();
   }catch(e){message('問題生成に失敗したので、もう一度押してな')}
-  finally{generating=false;$('board').style.opacity='1';store()}
+  finally{generating=false;$('board').style.opacity='1';redraw();store()}
  },35);
 }
 $('note').addEventListener('click',()=>{modeNote=!modeNote;stat()});
 $('erase').addEventListener('click',erase);$('undo').addEventListener('click',undo);$('hint').addEventListener('click',hint);
-$('new').addEventListener('click',()=>{if(!solved&&values.some((v,i)=>!givens[i]&&v)&&!confirm('今の問題を終了して、新しい問題にする？'))return;newGame()});
+$('start').addEventListener('click',()=>{
+ if(generating)return;
+ if(givens.length&&!solved&&values.some((v,i)=>!givens[i]&&v)&&!confirm('前の問題を終了して、選んだ設定でスタートする？'))return;
+ newGame(pendingSize,pendingDifficulty);
+});
+$('new').addEventListener('click',()=>{
+ if(generating)return;
+ if(!solved&&values.some((v,i)=>!givens[i]&&v)&&!confirm('今の問題を終了して、新しい問題にする？'))return;
+ newGame(pendingSize,pendingDifficulty);
+});
 $('check').addEventListener('click',()=>{
+ if(!ready){message('スタートを押してゲームを始めてな！');return}
  if(solved){message('すでにクリア済みやで！');return}
  const errors=values.reduce((a,v,i)=>a+(v!==0&&v!==solution[i]?1:0),0);
  message(errors?'まだ '+errors+' マスに誤りがあるで。':'ここまで入力した数字は正解！');
  if(errors===0)completed();
 });
-for(const b of document.querySelectorAll('[data-size]'))b.addEventListener('click',()=>{const n=Number(b.dataset.size);if(n===size)return;if(!solved&&values.some((v,i)=>!givens[i]&&v)&&!confirm('進行中の問題を終了して切り替える？'))return;newGame(n,difficulty)});
-for(const b of document.querySelectorAll('[data-diff]'))b.addEventListener('click',()=>{const d=b.dataset.diff;if(d===difficulty)return;if(!solved&&values.some((v,i)=>!givens[i]&&v)&&!confirm('進行中の問題を終了して切り替える？'))return;newGame(size,d)});
+for(const b of document.querySelectorAll('[data-size]'))b.addEventListener('click',()=>{
+ pendingSize=Number(b.dataset.size);ready=false;
+ message('サイズと難易度を選んで、スタートを押してな！');drawBoard();stat();
+});
+for(const b of document.querySelectorAll('[data-diff]'))b.addEventListener('click',()=>{
+ pendingDifficulty=b.dataset.diff;ready=false;
+ message('サイズと難易度を選んで、スタートを押してな！');drawBoard();stat();
+});
 $('modalClose').addEventListener('click',()=>{$('modal').hidden=true});$('modal').addEventListener('click',e=>{if(e.target===$('modal'))$('modal').hidden=true});
 document.addEventListener('keydown',e=>{
  if(e.target.closest('button,select,input,textarea'))return;
@@ -241,9 +260,17 @@ document.addEventListener('keydown',e=>{
  else if(e.key==='Backspace'||e.key==='Delete')erase();
  else if(e.key.toLowerCase()==='n'){modeNote=!modeNote;stat()}
 });
-setInterval(()=>{if(!generating&&!solved&&!document.hidden&&givens.length){seconds++;$('timer').textContent=timeText(seconds);if(seconds%5===0)store()}},1000);
+setInterval(()=>{if(ready&&!generating&&!solved&&!document.hidden&&givens.length){seconds++;$('timer').textContent=timeText(seconds);if(seconds%5===0)store()}},1000);
 document.addEventListener('visibilitychange',()=>{if(document.hidden)store()});
 window.addEventListener('pagehide',store);
-if(load()){redraw();message(solved?'🎉 前回の問題はクリア済み！':'前回の続きから再開したで！')}else newGame();
+if(load()){
+ ready=true;pendingSize=size;pendingDifficulty=difficulty;
+ redraw();message(solved?'🎉 前回の問題はクリア済み！':'前回の続きから再開したで！');
+}else{
+ config(6);difficulty='easy';pendingSize=6;pendingDifficulty='easy';
+ givens=range(36).map(()=>0);values=givens.slice();notes=range(36).map(()=>[]);
+ ready=false;drawBoard();drawNumbers();stat();
+ message('サイズと難易度を選んで、スタートを押してな！');
+}
 })();
 </script></body></html>
