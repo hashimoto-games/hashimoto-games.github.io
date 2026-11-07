@@ -30,7 +30,7 @@ h1{text-align:center;margin:12px 0 4px;font-size:clamp(26px,7.2vw,38px);letter-s
 .help{margin-top:14px;background:#101f34;border:1px solid #354f67;border-radius:13px;padding:12px 14px}.help summary{font-size:12px;font-weight:900;color:#b1e5df;cursor:pointer}.help p{margin:8px 0 0;color:#c7d4e0;font-size:12px;line-height:1.75}
 .confirm-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}.confirm-actions button{width:100%;margin-top:8px}.confirm-actions .cancel{background:#39506b;color:#fff}.modal[hidden]{display:none}.modal{position:fixed;z-index:50;inset:0;background:#061021e6;display:flex;align-items:center;justify-content:center;padding:18px}.dialog{width:min(100%,400px);background:#182b43;border:2px solid #a5dccc;border-radius:16px;padding:23px 17px;text-align:center;box-shadow:0 18px 40px #0008}.dialog h2{font-size:23px;margin:0 0 11px;color:#ffde9f}.dialog p{color:#cfe0ec;font-size:13px;line-height:1.7}.dialog button{width:100%;border:0;background:#9cebd8;color:#173441;border-radius:10px;font-weight:900;padding:13px;margin-top:8px}
 footer{text-align:center;font-size:10px;color:#889fb7;margin:17px}
-@media(max-width:520px){.wrap{padding:9px 8px max(18px,env(safe-area-inset-bottom,0px))}h1{font-size:clamp(24px,6.5vw,31px);margin:9px 0 3px}.sub{margin-bottom:8px}.options{margin-bottom:6px}.row{margin-bottom:6px}.numbers{margin:8px 0;gap:3px}.numbers button{height:48px}.tools{grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}.tools button{min-height:39px}.board{max-height:min(100vw - 16px,54dvh);margin-inline:auto;width:min(100%,54dvh)}.board.six{max-height:min(100vw - 16px,58dvh);width:min(100%,58dvh)}}
+@media(max-width:520px){.wrap{padding:9px 8px max(18px,env(safe-area-inset-bottom,0px))}h1{font-size:clamp(24px,6.5vw,31px);margin:9px 0 3px}.sub{margin-bottom:8px}.options{margin-bottom:6px}.row{margin-bottom:6px}.numbers{margin:8px 0;gap:3px}.numbers button{height:48px}.tools{grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}.tools button{min-height:39px}.board{max-height:min(calc(100vw - 16px),54dvh);margin-inline:auto;width:min(100%,54dvh)}.board.six{max-height:min(calc(100vw - 16px),58dvh);width:min(100%,58dvh)}}
 @media(max-width:355px){.wrap{padding:10px 6px}.numbers{gap:2px}.numbers button{height:42px}.tools{gap:4px}.tools button{font-size:11px}}
 </style>
 <script src="./cp_analytics.js?v=1" defer></script>
@@ -39,7 +39,7 @@ footer{text-align:center;font-size:10px;color:#889fb7;margin:17px}
 <h1>CP <em>NUMBER LOGIC</em></h1><p class="sub">数字を埋めて、ひらめきを楽しもう！</p>
 <div class="options"><div class="opts" id="sizes"><button type="button" data-size="6">6 × 6</button><button type="button" data-size="9">9 × 9</button></div>
 <div class="opts" id="difficulties"><button type="button" data-diff="easy">初級</button><button type="button" data-diff="normal">中級</button><button type="button" data-diff="hard">上級</button></div></div>
-<a href="./cp_number_logic_daily.html" class="daily-link">🏆 デイリーチャレンジに挑戦（6×6／9×9）</a>
+<a href="./cp_number_logic_daily_v2.html" class="daily-link">🏆 デイリーチャレンジに挑戦（6×6／9×9）</a>
 <button type="button" class="start" id="start">▶ スタート</button><button type="button" class="resume" id="resume" hidden>↪ 前回の続きから再開</button>
 <div class="row"><div class="pill" id="remaining">残り ― マス</div><div class="pill timer" id="timer">00:00</div><div class="pill" id="best">BEST ―</div></div>
 <button type="button" class="pause-button" id="pause" hidden>⏸ 一時停止</button>
