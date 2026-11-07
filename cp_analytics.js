@@ -15,6 +15,7 @@
     'cp_kanji_eight.html':'kanji_eight','cp_yomichare.html':'yomichare',
     'cp_number_logic.html':'number_logic','cp_number_logic_v2.html':'number_logic','cp_number_logic_v3.html':'number_logic','cp_number_logic_v4.html':'number_logic','cp_number_logic_v5.html':'number_logic','cp_number_logic_v6.html':'number_logic',
     'cp_number_logic_daily.html':'number_logic',
+    'cp_number_logic_v7.html':'number_logic','cp_number_logic_daily_v2.html':'number_logic',
     'about.html':'about','credits.html':'credits'
   };
   const prefix = '/';
